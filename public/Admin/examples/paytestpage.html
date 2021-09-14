@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* Center the loader */
+    #loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Add animation to "page content" */
+    .animate-bottom {
+      position: relative;
+      -webkit-animation-name: animatebottom;
+      -webkit-animation-duration: 1s;
+      animation-name: animatebottom;
+      animation-duration: 1s
+    }
+
+    @-webkit-keyframes animatebottom {
+      from {
+        bottom: -100px;
+        opacity: 0
+      }
+
+      to {
+        bottom: 0px;
+        opacity: 1
+      }
+    }
+
+    @keyframes animatebottom {
+      from {
+        bottom: -100px;
+        opacity: 0
+      }
+
+      to {
+        bottom: 0;
+        opacity: 1
+      }
+    }
+
+    #myDiv {
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body style="margin:0;">
+
+  <div id="loader"></div>
+
+  <form method="POST" action="https://api.razorpay.com/v1/checkout/embedded" id="formdata" style="display: none;">
+
+  </form>
+
+
+
+
+  <script>
+
+    function parseURLParams(url) {
+      var queryStart = url.indexOf("?") + 1,
+        queryEnd = url.indexOf("#") + 1 || url.length + 1,
+        query = url.slice(queryStart, queryEnd - 1),
+        pairs = query.split("&"),
+        parms = {}, i, n, v, nv;
+
+      if (query === url || query === "") return;
+
+      for (i = 0; i < pairs.length; i++) {
+        nv = pairs[i].split("=", 2);
+        n = decodeURIComponent(nv[0]);
+        v = nv[1];
+
+        if (!parms.hasOwnProperty(n)) parms[n] = [];
+        parms[n].push(nv.length === 2 ? v : null);
+      }
+      return parms;
+
+    }
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+      url = parseURLParams(window.location.href);
+      formid = document.getElementById("formdata");//rzp_test_hSz9Tj6gVGZsvV
+      formid.innerHTML = `<input type="hidden" name="key_id" value="rzp_test_j5jCrnROUNJlnS">
+    <input type="hidden" name="order_id" value="${url.order_id}">
+    <input type="hidden" name="name" value="Estudo">
+    <input type="hidden" name="description" value="The Learning App">
+    <input type="hidden" name="image" value="https://firebasestorage.googleapis.com/v0/b/estudo-admin.appspot.com/o/Group%201615.png?alt=media">
+    <input type="hidden" name="prefill[name]" value="${url.name}">
+    <input type="hidden" name="prefill[contact]" value="${url.contact}">
+    <input type="hidden" name="prefill[email]" value="${url.email}">
+    <input type="hidden" name="notes[shipping address]" value="L-16, The Business Centre, 61 Wellfield Road, New Delhi - 110001">
+    <input type="hidden" name="callback_url" value="https://us-central1-estudo-admin.cloudfunctions.net/paymentcomplete_v2?callback_url=true&order_id=${url.order_id}">
+  <input type="hidden" name="cancel_url" value="https://us-central1-estudo-admin.cloudfunctions.net/paymentcomplete_v2?callback_url=false&order_id=${url.order_id}">
+    <button style>Submit</button>`
+
+
+
+      formid.submit();
+
+
+
+
+
+
+
+    })
+
+  </script>
+</body>
+
+</html>

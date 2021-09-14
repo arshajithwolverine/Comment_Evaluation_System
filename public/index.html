@@ -1,89 +1,1064 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your Development with a Dashboard">
+    <meta name="author" content="Epoch Zero.">
+    <title>Estudo</title>
+    <meta property="og:image" content="../assets/img/brand/favicon.png">
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/9.0.2/firebase-app.js"></script>
+    <!-- Favicon -->
+    <link rel="icon" href="/Admin/assets/img/brand/favicon.png" type="image/png">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+    <!-- Icons -->
+    <link rel="stylesheet" href="/Admin/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
+    <link rel="stylesheet" href="/Admin/assets/vendor/nucleo/css/nucleo.css" type="text/css">
+    <!-- Page plugins -->
+    <!-- Argon CSS -->
+    <link rel="stylesheet" href="/Admin/assets/css/argon.css?v=1.2.0" type="text/css">
+
+
+    <script defer src="/__/firebase/7.7.0/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/9.0.2/firebase-auth.js"></script>
-    <script defer src="/__/firebase/9.0.2/firebase-database.js"></script>
-    <script defer src="/__/firebase/9.0.2/firebase-firestore.js"></script>
-    <script defer src="/__/firebase/9.0.2/firebase-functions.js"></script>
-    <script defer src="/__/firebase/9.0.2/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/9.0.2/firebase-storage.js"></script>
-    <script defer src="/__/firebase/9.0.2/firebase-analytics.js"></script>
-    <script defer src="/__/firebase/9.0.2/firebase-remote-config.js"></script>
-    <script defer src="/__/firebase/9.0.2/firebase-performance.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <script defer src="/__/firebase/7.7.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/7.7.0/firebase-storage.js"></script>
+    <script defer src="/__/firebase/7.7.0/firebase-firestore.js"></script>
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <style>
+        .rajath {
+            display: grid;
+            grid-row-gap: 10px;
+            grid-template-columns: repeat(2, 1fr);
+            background-color: white;
+            box-shadow: 0 0 1rem 0 rgba(136, 152, 170, .15);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .rajathDiv {
+            text-decoration-style: dotted;
+            font-style: normal;
+            font-weight: bolder;
+            font-size: small
+        }
+
+        .rajathDiv1 {
+            flex: 4;
+        }
+
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropbtn:hover,
+        .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+
+        #myInput {
+            box-sizing: border-box;
+            background-image: url('searchicon.png');
+            background-position: 14px 12px;
+            background-repeat: no-repeat;
+            font-size: 16px;
+            padding: 14px 20px 12px 45px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #myInput:focus {
+            outline: 3px solid #ddd;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f6f6f6;
+            min-width: 230px;
+            overflow: auto;
+            border: 1px solid #ddd;
+            z-index: 1000;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown a:hover {
+            background-color: #ddd;
+        }
+
+        .show {
+            display: block;
+        }
     </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+</head>
+
+<body style="display: none;" id="the-body">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loadEl = document.querySelector('#load');
+            // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+            // // The Firebase SDK is initialized and available here!
+            //
+            // firebase.auth().onAuthStateChanged(user => { });
+            // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+            // firebase.firestore().doc('/foo/bar').get().then(() => { });
+            // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+            // firebase.messaging().requestPermission().then(() => { });
+            // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+            // firebase.analytics(); // call to activate
+            // firebase.analytics().logEvent('tutorial_completed');
+            // firebase.performance(); // call to activate
+            //
+            // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+            app = firebase.app();
+            console.log(app);
+            console.log(firebase.auth().currentUser)
+            firebase.auth().onAuthStateChanged(async function (user) {
+                if (user) {
+                    document.getElementById('the-body').style.display = 'block';
+                    const userData = await db.collection('Users').doc(user.uid).get();
+                    document.getElementById('user-name').innerHTML = userData.data().Name;
+                } else {
+                    console.log("not logged")
+                    location.replace('/Admin/CES_html/login.html');
+                }
+            })
+
+        });
+    </script>
+
+    <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+        <div class="scrollbar-inner">
+            <!-- Brand -->
+            <div class="sidenav-header  align-items-center">
+                <a class="navbar-brand" href="javascript:void(0)" style="padding-left: 0px;">
+                    <!-- <h1>Estudo</h1> -->
+                    <img src="./Admin/assets/img/brand/blue.png" class="navbar-brand-img" alt="..."
+                        style="max-height: 4.5rem;">
+                </a>
+            </div>
+            <div class="navbar-inner">
+                <!-- Collapse -->
+                <div class="collapse navbar-collapse" id="sidenav-collapse-main" style="margin-top: 10%;">
+                    <!-- Nav items -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="dashboard.html">
+                                <i class="ni ni-tv-2 text-primary"></i>
+                                <span class="nav-link-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#BANNER_NAVIGATION">
+                                <i class="ni ni-album-2 text-primary"></i>
+                                <span class="nav-link-text">BANNER_NAVIGATION</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#UGC_NET">
+                                <i class="ni ni-world text-orange"></i>
+                                <span class="nav-link-text">UGC NET</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#DEGREE_COURSES">
+                                <i class="ni ni-single-02 text-yellow"></i>
+                                <span class="nav-link-text">DEGREE COURSES</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#SKILLED_COURSES">
+                                <i class="ni ni-air-baloon text-primary"></i>
+                                <span class="nav-link-text">SKILLED COURSES</span>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="#HomePage">
+                                <i class="ni ni-books text-primary"></i>
+                                <span class="nav-link-text">HomePage</span>
+                            </a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#COURSE">
+                                <i class="ni ni-spaceship text-primary"></i>
+                                <span class="nav-link-text">LIFE STYLE COURSES</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#NOTIFICATION">
+                                <i class="ni ni-notification-70 text-primary"></i>
+                                <span class="nav-link-text">NOTIFICATION</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#COUPONS">
+                                <i class="ni ni-tag text-primary"></i>
+                                <span class="nav-link-text">COUPONS</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#CERTIFICATE">
+                                <i class="ni ni-tie-bow text-dark"></i>
+                                <span class="nav-link-text">CERTIFICATE</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#REPORT">
+                                <i class="ni ni-send text-dark"></i>
+                                <span class="nav-link-text">REPORT</span>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#ORDERS">
+                                <i class="ni ni-album-2 text-primary"></i>
+                                <span class="nav-link-text">ORDERS</span>
+                            </a>
+                        </li>
+                        <!--
+                        <li class="nav-item">
+                            <a class="nav-link" href="#Notification">
+                                <i class="ni ni-album-2 text-primary"></i>
+                                <span class="nav-link-text">Notification</span>
+                            </a>
+                        </li> -->
+                    </ul>
+                    <!-- Divider -->
+                    <hr class="my-3">
+                    <!-- Heading -->
+
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="main-content" id="panel" style="overflow: hidden;background-color:black;">
+        <!-- Topnav -->
+
+        <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <h6 class="h2 text-white d-inline-block mb-0" id="HeadingID">DASHBOARD</h6>
+                    <!-- Navbar links -->
+                    <ul class="navbar-nav align-items-center" style="margin-left: auto;">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link pr-0" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <div class="media align-items-center">
+                                    <span class="avatar avatar-sm rounded-circle">
+                                        <img alt="" src="../Admin/assets/img/theme/user.png">
+                                    </span>
+                                    <div class="media-body  ml-2  d-none d-lg-block">
+                                        <span class="mb-0 text-sm  font-weight-bold" onclick="googlelogin()"
+                                            id="user-name"></span>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu  dropdown-menu-right ">
+                                <div class="dropdown-header noti-title">
+                                    <h6 class="text-overflow m-0">Welcome!</h6>
+                                </div>
+                                <a href="#!" class="dropdown-item">
+                                    <i class="ni ni-single-02"></i>
+                                    <span>My profile</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#logout" class="dropdown-item">
+                                    <i class="ni ni-user-run"></i>
+                                    <span>Logout</span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav align-items-center" style="margin-left: 10PX;">
+                        <li class="nav-item d-xl-none">
+                            <!-- Sidenav toggler -->
+                            <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin"
+                                data-target="#sidenav-main">
+                                <div class="sidenav-toggler-inner">
+                                    <i class="sidenav-toggler-line"></i>
+                                    <i class="sidenav-toggler-line"></i>
+                                    <i class="sidenav-toggler-line"></i>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+
+
+        <!-- Header -->
+        <!-- Header -->
+        <div id="rendercontent.js">
+
+
+
+            <div class="header bg-primary pb-6">
+                <div class="container-fluid">
+                    <div class="header-body">
+                        <div class="row align-items-center py-4">
+                            <div class="col-lg-6 col-7">
+                                <form class="navbar-search navbar-search-light form-inline mr-sm-3"
+                                    id="navbar-search-main" hidden>
+                                    <div class="form-group mb-0">
+                                        <div class="input-group input-group-alternative input-group-merge">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                            </div>
+                                            <input class="form-control" placeholder="Search" type="text">
+                                        </div>
+                                    </div>
+                                    <button type="button" class="close" data-action="search-close"
+                                        data-target="#navbar-search-main" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-lg-6 col-5 text-right">
+                                <a class="btn btn-sm btn-neutral" onclick="ToggleBack()">Main Page</a>
+                                <!-- <a  class="btn btn-sm btn-neutral">Filters</a> -->
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <a href="#BANNER_NAVIGATION">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-uppercase text-muted mb-0">
+                                                        BANNER NAVIGATION
+                                                    </h5>
+                                                    <span class="h2 font-weight-bold mb-0">BANNER</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div
+                                                        class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                                                        <i class="ni ni-album-2"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="mt-3 mb-0 text-sm">
+                                                <span class="text-nowrap"></span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <!-- Card body -->
+                                    <div class="card-body">
+                                        <a href="#UGC_NET">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-uppercase text-muted mb-0">UGC NET
+                                                    </h5>
+                                                    <span class="h2 font-weight-bold mb-0">UGC NET</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div
+                                                        class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
+                                                        <i class="ni ni-active-40"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="mt-3 mb-0 text-sm">
+                                                <!-- <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> </span> -->
+                                                <span class="text-nowrap"></span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <!-- Card body -->
+                                    <div class="card-body">
+                                        <a href="#DEGREE_COURSES">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-uppercase text-muted mb-0">DEGREE COURSES
+                                                    </h5>
+                                                    <span class="h2 font-weight-bold mb-0">DEGREE</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div
+                                                        class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+                                                        <i class="ni ni-money-coins"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="mt-3 mb-0 text-sm">
+                                                <!-- <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span> -->
+                                                <span class="text-nowrap"></span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <a href="#SKILLED_COURSES">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-uppercase text-muted mb-0">
+                                                        SKILLED COURSES
+                                                    </h5>
+                                                    <span class="h2 font-weight-bold mb-0">SKILLED</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div
+                                                        class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
+                                                        <i class="ni ni-chart-pie-35"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="mt-3 mb-0 text-sm">
+                                                <span class="text-nowrap"></span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <a href="#COURSE">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-uppercase text-muted mb-0">
+                                                        LIFE STYLE COURSES
+                                                    </h5>
+                                                    <span class="h2 font-weight-bold mb-0">LIFE STYLE</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div
+                                                        class="icon icon-shape bg-gradient-yellow text-white rounded-circle shadow">
+                                                        <i class="ni ni-collection"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="mt-3 mb-0 text-sm">
+                                                <span class="text-nowrap"></span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <a href="#NOTIFICATION">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-uppercase text-muted mb-0">NOTIFICATION
+                                                    </h5>
+                                                    <span class="h2 font-weight-bold mb-0">NOTIFICATION</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div
+                                                        class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                                                        <i class="ni ni-notification-70"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="mt-3 mb-0 text-sm">
+                                                <span class="text-nowrap"></span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <a href="#COUPONS">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-uppercase text-muted mb-0">COUPONS
+                                                    </h5>
+                                                    <span class="h2 font-weight-bold mb-0">COUPONS</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div
+                                                        class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                                                        <i class="ni ni-tag"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="mt-3 mb-0 text-sm">
+                                                <span class="text-nowrap"></span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <a href="#CERTIFICATE">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-uppercase text-muted mb-0">CERTIFICATE
+                                                    </h5>
+                                                    <span class="h2 font-weight-bold mb-0">CERTIFICATE</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div
+                                                        class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                                                        <i class="ni ni-chart-bar-32"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="mt-3 mb-0 text-sm">
+                                                <span class="text-nowrap"></span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <a href="#REPORT">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-uppercase text-muted mb-0">REPORT</h5>
+                                                    <span class="h2 font-weight-bold mb-0">REPORT</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div
+                                                        class="icon icon-shape bg-gradient-yellow text-white rounded-circle shadow">
+                                                        <i class="ni ni-collection"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="mt-3 mb-0 text-sm">
+                                                <span class="text-nowrap"></span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <a href="#ORDERS">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-uppercase text-muted mb-0">ORDERS
+                                                    </h5>
+                                                    <span class="h2 font-weight-bold mb-0">ORDERS</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div
+                                                        class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                                                        <i class="ni ni-album-2"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="mt-3 mb-0 text-sm">
+                                                <span class="text-nowrap"></span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- Page content -->
+
+            <div class="container-fluid mt--6">
+
+
+
+
+
+                <div class="row" id="Topicsrow">
+                </div>
+
+                <div class="row" id="editrow">
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer pt-0">
+            <div class="row align-items-center justify-content-lg-between">
+                <div class="col-lg-6">
+                    <div class="copyright text-center  text-lg-left  text-muted">
+                        &copy; 2020 <a href="" class="font-weight-bold ml-1" target="_blank">EPOCH ZERO</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                        <li class="nav-item">
+                            <a href="https://epochzero.tech/" class="nav-link" target="_blank">Epoch Zero</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://epochzero.tech/" class="nav-link" target="_blank">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://epochzero.tech/" class="nav-link" target="_blank">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://epochzero.tech/" class="nav-link" target="_blank">License</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+
+
+    <!-- add library -->
+
+
+    <script src="/Admin/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/Admin/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/Admin/assets/vendor/js-cookie/js.cookie.js"></script>
+    <script src="/Admin/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="/Admin/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+    <!-- Optional JS -->
+    <script src="/Admin/assets/vendor/chart.js/dist/Chart.min.js"></script>
+    <script src="/Admin/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+    <!-- Argon JS -->
+    <script src="/Admin/assets/js/argon.js?v=1.2.0"></script>
+
+
+    <!-- FOR ESTUDO -->
+    <script src="/Admin/js/NET_Paper.js"></script>
+    <script src="/Admin/js/degree_courses.js"></script>
+    <script src="/Admin/js/Skilled_Courses.js"></script>
+    <script src="/Admin/js/degree.js"></script>
+    <script src="/Admin/js/banner_navigation.js"></script>
+    <script src="/Admin/js/notification.js"></script>
+    <script src="/Admin/js/coupons.js"></script>
+    <script src="/Admin/js/generatecert.js"></script>
+    <script src="/Admin/js/Payment_report.js"></script>
+    <script src="/Admin/js/orders.js"></script>
+
+    <!--Comment Evaluation System-->
+    <script src="/Admin/CES_js/logout.js"></script>
+
+
+
+
+
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+
+
+        var app, db;
+        let tagistostorageurl = 'https://firebasestorage.googleapis.com/v0/b/tagisto-bab43.appspot.com/o/'
+        document.addEventListener('DOMContentLoaded', function () {
+            app = firebase.app();
+            console.log(app);
+            db = firebase.firestore(app);
+            changeui();
+        })
+
+        window.onhashchange = function () {
+            var what_to_do = document.location.hash;
+            what_to_do_fun(what_to_do);
         }
-      });
+
+        function changeui() {
+            var what_to_do = document.location.hash;
+            what_to_do_fun(what_to_do);
+        }
+
+
+
+        function what_to_do_fun(what_to_do) {
+            if (what_to_do == "#logout") {
+                document.getElementById('the-body').style.display = 'none';
+                logout();
+                console.log("log out");
+            }
+
+
+
+            if (what_to_do == "#UGC_NET") {
+                document.getElementById("HeadingID").innerHTML = "UGC NET";
+                NET_Paper();
+                console.log("UGC_NET");
+            }
+            if (what_to_do == "#SKILLED_COURSES") {
+                document.getElementById("HeadingID").innerHTML = "SKILLED COURSES";
+                Skilled_Courses();
+                console.log("SKILLED_COURSES");
+            }
+            if (what_to_do == "#DEGREE_COURSES") {
+                document.getElementById("HeadingID").innerHTML = "DEGREE COURSES";
+                degree_courses();
+                console.log("DEGREE_COURSES");
+            }
+            if (what_to_do == "#COURSE") {
+                document.getElementById("HeadingID").innerHTML = "LIFE STYLE COURSES";
+                Courses();
+                console.log("COURSES");
+            }
+            if (what_to_do == "#BANNER_NAVIGATION") {
+                document.getElementById("HeadingID").innerHTML = "BANNERS";
+                Banner();
+                console.log("BANNERS");
+            }
+            if (what_to_do == "#NOTIFICATION") {
+                document.getElementById("HeadingID").innerHTML = "NOTIFICATION";
+                Notify();
+                console.log("NOTIFICATION");
+            }
+            if (what_to_do == "#COUPONS") {
+                document.getElementById("HeadingID").innerHTML = "COUPONS";
+                Coupons();
+                console.log("COUPONS");
+            }
+            if (what_to_do == "#CERTIFICATE") {
+                document.getElementById("HeadingID").innerHTML = "CERTIFICATE";
+                GenerateCert();
+                console.log("CERTIFICATE");
+            }
+            if (what_to_do == "#REPORT") {
+                document.getElementById("HeadingID").innerHTML = "REPORT";
+                Payment_Report();
+                console.log("REPORT");
+            }
+            if (what_to_do == "#ORDERS") {
+                document.getElementById("HeadingID").innerHTML = "ORDERS";
+                Orders();
+                console.log("ORDERS")
+            }
+            // if (what_to_do == "#Store") {
+            //     document.getElementById("HeadingID").innerHTML = "STORE PRODUCTS";
+            //     Store()
+            //     console.log("Store")
+            // }
+            // if (what_to_do == "#Outlet") {
+            //     document.getElementById("HeadingID").innerHTML = "OUTLETS";
+            //     Outlets()
+            //     console.log("Outlets")
+            // }
+            // if (what_to_do == "#HomePage") {
+            //     document.getElementById("HeadingID").innerHTML = "HomePage";
+            //     HomePage()
+            //     console.log("HomePage")
+            // }
+            // if (what_to_do == "#Payment") {
+            //     document.getElementById("HeadingID").innerHTML = "Payment";
+            //     Payment()
+            //     console.log("Payment")
+            // }
+            // if (what_to_do == "#SpecialPackage") {
+            //     document.getElementById("HeadingID").innerHTML = "Special Package";
+            //     SpecialPackage()
+            //     console.log("Special Package")
+            // }
+            // if (what_to_do == "#Notification") {
+            //     document.getElementById("HeadingID").innerHTML = "Notification";
+            //     Notification()
+            //     console.log("Notification")
+            // }
+
+        }
+
+
+
+
+
+
+
+        // async function uploadtostorage(storagelocation,input,progressbar,progressno,alertmsg,uploadfileobj,callback){
+        //  var flag=0;
+        //  console.log(input)
+        //  if(uploadfileobj==null){
+        //      uploadfileobj.fileno=1;
+        //  }
+
+        // const app = firebase.app();
+        // console.log(app)
+        // const db = firebase.firestore();
+        //   var storageRef_image = firebase.storage().ref(storagelocation);
+
+        //  uploadTask =  storageRef_image.put(input);
+
+        // uploadTask.on('state_changed', function(snapshot){
+
+        // var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // //var elem = document.getElementById("myBar");   
+        //   if(Math.floor(progress)==100 && flag==0){
+        //     progressbar.className="progress-bar bg-success"
+        //     progressbar.style.width = '100%'; 
+        //     progressno.innerHTML =  "Completed";
+        //     flag=1;
+        //   }
+        //   else if(flag==0){
+        //   progressbar.style.width = Math.floor(progress) + '%'; 
+        //   progressno.innerHTML =  Math.floor(progress)  + '%';  
+        //   }
+
+        //   console.log('Upload is ' + progress + '% done');
+        //   switch (snapshot.state) {
+        //         case firebase.storage.TaskState.PAUSED: // or 'paused'
+        //         console.log('Upload is paused');
+        //         break;
+        //         case firebase.storage.TaskState.RUNNING: // or 'running'
+        //         console.log('Upload is running');
+        //         break;
+        //     }
+        // }, function(error) {
+        // // Handle unsuccessful uploads
+        // }, function(){
+        //     uploadfileobj.fileno--;
+        //   if(uploadfileobj.fileno<=0){
+        //     alert(alertmsg);
+        //     //document.getElementById('mockrow').style.display="none";
+        //     console.log("reached inside storage finsih");
+        //     if(callback!==undefined){
+        //       callback();
+        //     }
+        //   }
+        // });
+
+        // }
+
+
+
+        // var loadFile = function(event,input,outputid) {
+        // var output = document.getElementById(outputid);
+        // output.src = URL.createObjectURL(event.target.files[0]);
+        // };
+        let imageArray = [];
+
+        var loadImage = function (event, input, outputid) {
+            var output = document.getElementById(outputid);
+            let count = input.files.length;
+            let html = ``;
+            for (i = 0; i < count; i++) {
+                imageArray.push({ "image": event.target.files[i], "link": false });
+            }
+            console.log(imageArray)
+            for (j = 0; j < imageArray.length; j++) {
+                if (imageArray[j].link === false) {
+                    html = html + `<div name="imagediv" style="display:flex; flex-direction:column;margin-right: 2%; margin-bottom:2%;"><img id="image${j}" style="border: 1px solid black; width: 300px !important; height: 170px !important; margin-bottom: 0%; " src="${URL.createObjectURL(imageArray[j].image)}">
+            <button name="imageremove" style="width:100% !important" class="btn btn-icon btn-primary" type="button" onclick="removeImage('imagediv',this)">
+              <span class="btn-inner--icon"><i class="ni ni-fat-remove"></i></span>
+              <span class="btn-inner--text">Remove</span>
+            </button>
+            <div class="progress-wrapper">
+              <div class="progress-info">
+                <div class="progress-label">
+                  <span name="placeimageprogressno">0%</span>
+                </div>
+              </div>
+            <div class="progress">
+              <div name="placeimageprogressbar" class="progress-bar bg-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+            </div>
+            </div>
+            </div>`;
+                }
+
+            }
+            output.innerHTML = html;
+        };
+
+        let removeImageArray = [];
+
+        function removeImage(id, input) {
+
+            let index = Array.prototype.slice.call(document.getElementsByName('imageremove')).indexOf(input);
+
+            document.getElementsByName("imagediv")[index].remove();
+            console.log("index : " + index)
+            if (imageArray[index].link === true) {
+                removeImageArray.push(imageArray.splice(index, 1));
+                console.log(removeImageArray);
+            } else {
+                imageArray.splice(index, 1);
+            }
+
+            // +imageArray.slice(id+1,imageArray.length-1);
+
+            console.log(imageArray);
+        }
+
+        let videoArray = [];
+        var loadVideo = function (event, input, outputid) {
+            var output = document.getElementById(outputid);
+            let count = input.files.length;
+            let html = ``;
+            for (i = 0; i < count; i++) {
+                videoArray.push({ "video": event.target.files[i], "link": false });
+            }
+            console.log(videoArray)
+            for (j = 0; j < videoArray.length; j++) {
+                if (videoArray[j].link === false) {
+                    html = html + `<div name="videodiv" style="display:flex; flex-direction:column;margin-right: 2%; margin-bottom:2%;">
+      
+      <video width: 300px !important; height: 170px !important; controls>
+        <source src="${URL.createObjectURL(videoArray[j].video)}">
+        Your browser does not support HTML video.
+      </video>
+            <button name="videoremove" style="width:100% !important" class="btn btn-icon btn-primary" type="button" onclick="removeVideo('videodiv',this)">
+              <span class="btn-inner--icon"><i class="ni ni-fat-remove"></i></span>
+              <span class="btn-inner--text">Remove</span>
+            </button>
+            <div class="progress-wrapper">
+              <div class="progress-info">
+                <div class="progress-label">
+                  <span name="placevideoprogressno">0%</span>
+                </div>
+              </div>
+            <div class="progress">
+              <div name="placevideoprogressbar" class="progress-bar bg-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+            </div>
+            </div>
+            </div>`;
+                }
+
+            }
+            output.innerHTML = html;
+            console.log()
+        };
+
+        let removeVideoArray = [];
+
+        function removeVideo(id, input) {
+
+            let index = Array.prototype.slice.call(document.getElementsByName('videoremove')).indexOf(input);
+
+            document.getElementsByName("videodiv")[index].remove();
+            console.log("index : " + index)
+            if (videoArray[index].link === true) {
+                removeVideoArray.push(videoArray.splice(index, 1));
+                console.log(removeVideoArray);
+            } else {
+                videoArray.splice(index, 1);
+            }
+
+            // +imageArray.slice(id+1,imageArray.length-1);
+
+            console.log(videoArray);
+        }
+
+        function checkempty(name, datavar) {
+
+            if (Array.isArray(datavar) || NodeList.prototype.isPrototypeOf(datavar)) {
+
+                for (let index = 0; index < datavar.length; index++) {
+                    const element = datavar[index];
+
+                    if (element.value == null || element.value == undefined || element.value == "" || element.value == NaN) {
+                        alert(`Fill ${name} at ${index + 1}`);
+                        return true;
+                    }
+                }
+            }
+            else {
+                element = datavar;
+                if (element == null || element == undefined || element == "" || element == NaN) {
+                    alert(`Fill ${name}`);
+                    return true;
+                }
+
+            }
+        }
+
+
+
+
+
     </script>
-  </body>
+</body>
+
 </html>

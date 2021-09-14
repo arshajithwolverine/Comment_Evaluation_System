@@ -1,0 +1,223 @@
+<!--
+=========================================================
+* Argon Dashboard - v1.2.0
+=========================================================
+* Product Page: https://www.creative-tim.com/product/argon-dashboard
+
+* Copyright  Creative Tim (http://www.creative-tim.com)
+* Coded by www.creative-tim.com
+=========================================================
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
+  <!-- Favicon -->
+  <link rel="icon" href="../assets/img/brand/favicon.png" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="../assets/vendor/nucleo/css/nucleo.css" type="text/css">
+  <link rel="stylesheet" href="../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="../assets/css/argon.css?v=1.2.0" type="text/css">
+
+  <script defer src="/__/firebase/7.7.0/firebase-app.js"></script>
+  <script defer src="/__/firebase/7.7.0/firebase-firestore.js"></script>
+  <script defer src="/__/firebase/7.7.0/firebase-auth.js"></script>
+  <script defer src="/__/firebase/init.js"></script>
+  <style>
+  </style>
+</head>
+
+<body class="bg-default">
+  <!-- Navbar -->
+
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="header py-7 py-lg-8 pt-lg-9" style="background: #3B1C83;">
+      <div class="container">
+        <div class="header-body text-center mb-7">
+          <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-6 col-md-8 px-5">
+              <!--  <img style="width: 55px;" src="../assets/img/brand/Group 1615.png"> -->
+
+              <h1 style="display: inline;margin-left: 10px;vertical-align: top;color: whitesmoke;font-size:xx-large;">
+                COMMENT EVALUATION SYSTEM</h1>
+              <!--<p class="text-lead text-white">Use these awesome forms to login or create new account in your project for free.</p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
+          xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container mt--8 pb-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+          <div class="card bg-secondary border-0 mb-0" style="box-shadow: 0px 0px 8px  #888888;">
+            <div class="card-header bg-transparent pb-5">
+              <div class="text-muted text-center mt-2 mb-3"><small>Sign in with</small></div>
+              <div class="btn-wrapper text-center" onclick="googlelogin()">
+                <a href="#" class="btn btn-neutral btn-icon" onclick="googlelogin()">
+                  <span class="btn-inner--icon"><img src="../assets/img/icons/common/google.svg"
+                      onclick="googlelogin()"></span>
+                  <span class="btn-inner--text" onclick="googlelogin()">Google</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="py-5" id="footer-main">
+      <div class="container">
+        <div class="row align-items-center justify-content-xl-between">
+          <div class="col-xl-6">
+            <div class="copyright text-center text-xl-left text-muted">
+              Mini Project Done by<a href="" class="font-weight-bold ml-1" target="_blank">Arshajith B</a>
+            </div>
+          </div>
+          <div class="col-xl-6">
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Argon Scripts -->
+    <!-- Core -->
+    <script src="../assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/vendor/js-cookie/js.cookie.js"></script>
+    <script src="../assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="../assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+    <!-- Argon JS -->
+    <script src="../assets/js/argon.js?v=1.2.0"></script>
+    <script>
+      let app, db, params = [];
+      document.addEventListener('DOMContentLoaded', function () {
+        app = firebase.app();
+        console.log(app);
+        db = firebase.firestore();
+        url = window.location.href;
+        console.log(url.indexOf("?"))
+        if (url.indexOf("?") == -1) {
+          params.push("a");
+          params.push("dashboard.html");
+        }
+        else {
+          var queryStart = url.indexOf("?") + 1;
+          queryEnd = url.indexOf("#") + 1 || url.length + 1;
+          query = url.slice(queryStart, queryEnd - 1);
+          params = query.split("=", 2);
+        }
+        // firebase.auth().onAuthStateChanged(function (user) {
+        //   if (user) {
+        //     // checkAdmin();
+        //     location.replace('/index.html');
+        //   } else {
+        //     console.log("not logged")
+        //   }
+        // });
+
+      })
+
+      function googlelogin() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(async function (result) {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          var token = result.credential.accessToken;
+          // The signed-in user info.
+          var user = result.user;
+          console.log(user.uid)
+
+          const userData = await db.collection('Users').doc(user.uid).get();
+          if (userData.exists) {
+            location.replace(`/index.html`);
+          } else {
+            location.replace(`/Admin/CES_html/signUp.html`);
+          }
+          // ...
+        }).catch(function (error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+        });
+
+      }
+
+      function checkAdmin() {
+        firebase.auth().currentUser.getIdTokenResult()
+          .then((idTokenResult) => {
+            // Confirm the user is an Admin.
+            console.log(idTokenResult.claims.admin)
+            if (!!idTokenResult.claims.admin) {
+              // Show admin UI.
+              console.log("admin")
+              //location.replace(`/Admin/examples/${params[1]}`)
+              html = `
+            <div class="text-center text-muted mb-4">
+                <h1>Welcome Admin.</h1>
+              </div>
+              <div class="text-center">
+                  <button type="button" class="btn btn-primary my-4" onclick="Dashboard()">Goto Dashboard</button>
+                  <button type="button" class="btn btn-primary my-4" onclick="logout()">Sign Out</button>
+                </div>
+            `
+              document.getElementById("userperm").innerHTML = html
+            } else {
+              // Show regular user UI.
+              console.log("user")
+              html = `
+            <div class="text-center text-muted mb-4">
+                <h1>You dont have permissions to access the contents. Contact Admin.</h1>
+              </div>
+              <div class="text-center">
+                  <button type="button" class="btn btn-primary my-4" onclick="logout()">Sign Out</button>
+                </div>
+            `
+              document.getElementById("userperm").innerHTML = html
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      function Dashboard() {
+        location.replace(`/index.html`)
+      }
+
+      function logout() {
+        firebase.auth().signOut().then(function () {
+          console.log("signed out")
+          html = ``;
+          document.getElementById("userperm").innerHTML = html
+        }).catch(function (error) {
+          console.log("error")
+          // An error happened.
+        });
+      }
+
+
+    </script>
+</body>
+
+</html>

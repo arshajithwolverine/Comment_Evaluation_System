@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your Learning and Development with a Dashboard">
+  <meta name="author" content="Epoch Zero.">
+  <title>Estudo Dashboard - The Learning App.</title>
+  <meta property="og:image" content="../assets/img/brand/favicon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="../assets/img/brand/favicon.png" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="../assets/vendor/nucleo/css/nucleo.css" type="text/css">
+  <link rel="stylesheet" href="../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
+  <!-- Page plugins -->
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="../assets/css/argon.css?v=1.2.0" type="text/css">
+
+
+  <script defer src="/__/firebase/7.7.0/firebase-app.js"></script>
+  <!-- include only the Firebase features as you need -->
+  <script defer src="/__/firebase/7.7.0/firebase-auth.js"></script>
+  <script defer src="/__/firebase/7.7.0/firebase-storage.js"></script>
+  <script defer src="/__/firebase/7.7.0/firebase-firestore.js"></script>
+
+  <!-- initialize the SDK after all desired features are loaded -->
+  <script defer src="/__/firebase/init.js"></script>
+</head>
+
+<body>
+  <!-- Sidenav -->
+  <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+    <div class="scrollbar-inner">
+      <!-- Brand -->
+      <div class="sidenav-header  align-items-center">
+        <a class="navbar-brand" href="javascript:void(0)" style="padding-left: 0px;">
+          <img src="../assets/img/brand/blue.png" class="navbar-brand-img" alt="..." style="max-height: 4.5rem;">
+        </a>
+      </div>
+      <div class="navbar-inner">
+        <!-- Collapse -->
+        <div class="collapse navbar-collapse" id="sidenav-collapse-main" style="margin-top: 10%;">
+          <!-- Nav items -->
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="dashboard.html">
+                <i class="ni ni-tv-2 text-primary"></i>
+                <span class="nav-link-text">Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="video.html">
+                <i class="ni ni-planet text-orange"></i>
+                <span class="nav-link-text">Videos</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="map.html">
+                <i class="ni ni-books text-primary"></i>
+                <span class="nav-link-text">Study Materials</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="previousyear.html">
+                <i class="ni ni-single-02 text-yellow"></i>
+                <span class="nav-link-text">Previous Year</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="MockTest.html">
+                <i class="ni ni-bullet-list-67 text-default"></i>
+                <span class="nav-link-text">Mock-Test</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="payments.html">
+                <i class="ni ni-send text-dark"></i>
+                <span class="nav-link-text">Payments</span>
+              </a>
+            </li>
+          </ul>
+          <!-- Divider -->
+          <hr class="my-3">
+          <!-- Heading -->
+
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Main content -->
+  <div class="main-content" id="panel">
+    <!-- Topnav -->
+    <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <!-- Search form -->
+          <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
+            <div class="form-group mb-0">
+              <div class="input-group input-group-alternative input-group-merge">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input class="form-control" placeholder="Search" type="text">
+              </div>
+            </div>
+            <button type="button" class="close" data-action="search-close" data-target="#navbar-search-main"
+              aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </form>
+          <!-- Navbar links -->
+          <ul class="navbar-nav align-items-center  ml-md-auto ">
+            <li class="nav-item d-xl-none">
+              <!-- Sidenav toggler -->
+              <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin"
+                data-target="#sidenav-main">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item d-sm-none">
+              <a class="nav-link" href="#" data-action="search-show" data-target="#navbar-search-main">
+                <i class="ni ni-zoom-split-in"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="ni ni-bell-55"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-xl  dropdown-menu-right  py-0 overflow-hidden">
+                <!-- Dropdown header -->
+                <div class="px-3 py-3">
+                  <h6 class="text-sm text-muted m-0">You have <strong class="text-primary">13</strong> notifications.
+                  </h6>
+                </div>
+                <!-- List group -->
+                <div class="list-group list-group-flush">
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="../assets/img/theme/team-1.jpg" class="avatar rounded-circle">
+                      </div>
+                      <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-0 text-sm">Admin</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>2 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">Let's meet at Starbucks at 11:30. Wdyt?</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="../assets/img/theme/team-2.jpg" class="avatar rounded-circle">
+                      </div>
+                      <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-0 text-sm">Admin</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>3 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">A new issue has been reported for Argon.</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="../assets/img/theme/team-3.jpg" class="avatar rounded-circle">
+                      </div>
+                      <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-0 text-sm">Admin</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>5 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">Your posts have been liked a lot.</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="../assets/img/theme/team-4.jpg" class="avatar rounded-circle">
+                      </div>
+                      <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-0 text-sm">Admin</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>2 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">Let's meet at Starbucks at 11:30. Wdyt?</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="../assets/img/theme/team-5.jpg" class="avatar rounded-circle">
+                      </div>
+                      <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h4 class="mb-0 text-sm">Admin</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>3 hrs ago</small>
+                          </div>
+                        </div>
+                        <p class="text-sm mb-0">A new issue has been reported for Argon.</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <!-- View all -->
+                <a href="#!" class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="ni ni-ungroup"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default  dropdown-menu-right ">
+                <div class="row shortcuts px-4">
+                  <a href="#!" class="col-4 shortcut-item">
+                    <span class="shortcut-media avatar rounded-circle bg-gradient-red">
+                      <i class="ni ni-calendar-grid-58"></i>
+                    </span>
+                    <small>Calendar</small>
+                  </a>
+                  <a href="#!" class="col-4 shortcut-item">
+                    <span class="shortcut-media avatar rounded-circle bg-gradient-orange">
+                      <i class="ni ni-email-83"></i>
+                    </span>
+                    <small>Email</small>
+                  </a>
+                  <a href="#!" class="col-4 shortcut-item">
+                    <span class="shortcut-media avatar rounded-circle bg-gradient-info">
+                      <i class="ni ni-credit-card"></i>
+                    </span>
+                    <small>Payments</small>
+                  </a>
+                  <a href="#!" class="col-4 shortcut-item">
+                    <span class="shortcut-media avatar rounded-circle bg-gradient-green">
+                      <i class="ni ni-books"></i>
+                    </span>
+                    <small>Reports</small>
+                  </a>
+                  <a href="#!" class="col-4 shortcut-item">
+                    <span class="shortcut-media avatar rounded-circle bg-gradient-purple">
+                      <i class="ni ni-pin-3"></i>
+                    </span>
+                    <small>Maps</small>
+                  </a>
+                  <a href="#!" class="col-4 shortcut-item">
+                    <span class="shortcut-media avatar rounded-circle bg-gradient-yellow">
+                      <i class="ni ni-basket"></i>
+                    </span>
+                    <small>Shop</small>
+                  </a>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
+            <li class="nav-item dropdown">
+              <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <div class="media align-items-center">
+                  <span class="avatar avatar-sm rounded-circle">
+                    <img alt="Image placeholder" src="../assets/img/theme/team-4.jpg">
+                  </span>
+                  <div class="media-body  ml-2  d-none d-lg-block">
+                    <span class="mb-0 text-sm  font-weight-bold">Admin</span>
+                  </div>
+                </div>
+              </a>
+              <div class="dropdown-menu  dropdown-menu-right ">
+                <div class="dropdown-header noti-title">
+                  <h6 class="text-overflow m-0">Welcome!</h6>
+                </div>
+                <a href="#!" class="dropdown-item">
+                  <i class="ni ni-single-02"></i>
+                  <span>My profile</span>
+                </a>
+                <a href="#!" class="dropdown-item">
+                  <i class="ni ni-settings-gear-65"></i>
+                  <span>Settings</span>
+                </a>
+                <a href="#!" class="dropdown-item">
+                  <i class="ni ni-calendar-grid-58"></i>
+                  <span>Activity</span>
+                </a>
+                <a href="#!" class="dropdown-item">
+                  <i class="ni ni-support-16"></i>
+                  <span>Support</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#!" class="dropdown-item">
+                  <i class="ni ni-user-run"></i>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Header -->
+    <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <h6 class="h2 text-white d-inline-block mb-0">Default</h6>
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item"><a href="#">Dashboards</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Default</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-lg-6 col-5 text-right">
+              <a href="#" class="btn btn-sm btn-neutral">New</a>
+              <a href="#" class="btn btn-sm btn-neutral">Filters</a>
+            </div>
+          </div>
+          <!-- Card stats -->
+          <div class="row">
+            <div class="col-xl-3 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <a href="video.html">
+                    <div class="row">
+                      <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Videos</h5>
+                        <span class="h2 font-weight-bold mb-0">Videos</span>
+                      </div>
+                      <div class="col-auto">
+                        <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
+                          <i class="ni ni-active-40"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="mt-3 mb-0 text-sm">
+                      <!-- <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> </span> -->
+                      <span class="text-nowrap"></span>
+                    </p>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <a href="map.html">
+                    <div class="row">
+                      <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Study Materials</h5>
+                        <span class="h2 font-weight-bold mb-0">Study Materials</span>
+                      </div>
+                      <div class="col-auto">
+                        <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
+                          <i class="ni ni-chart-pie-35"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="mt-3 mb-0 text-sm">
+                      <span class="text-nowrap"></span>
+                    </p>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="col-xl-3 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <a href="previousyear.html">
+                    <div class="row">
+                      <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Previous Year</h5>
+                        <span class="h2 font-weight-bold mb-0">Previous Year</span>
+                      </div>
+                      <div class="col-auto">
+                        <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+                          <i class="ni ni-money-coins"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="mt-3 mb-0 text-sm">
+                      <!-- <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span> -->
+                      <span class="text-nowrap"></span>
+                    </p>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <a href="MockTest.html">
+                    <div class="row">
+                      <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Mock-Test</h5>
+                        <span class="h2 font-weight-bold mb-0">Mock-Test</span>
+                      </div>
+                      <div class="col-auto">
+                        <div class="icon icon-shape bg-gradient-yellow text-white rounded-circle shadow">
+                          <i class="ni ni-collection"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="mt-3 mb-0 text-sm">
+                      <span class="text-nowrap"></span>
+                    </p>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+              <div class="card card-stats" style="cursor: pointer;" data-toggle="modal" data-target="#modal-form">
+                <!-- Card body -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Report</h5>
+                      <span class="h2 font-weight-bold mb-0">User-Data</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                        <i class="ni ni-chart-bar-32"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-sm">
+                    <span class="text-nowrap"></span>
+                  </p>
+                </div>
+              </div>
+              <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+                aria-hidden="true">
+
+                <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+                  <div class="modal-content">
+
+                    <div class="modal-body p-0">
+                      <div class="card bg-secondary border-0 mb-0">
+
+                        <div class="card-body px-lg-5 py-lg-5">
+                          <div class="text-center text-muted mb-4">
+                            <small>Enter Dates</small>
+                          </div>
+                          <form role="form">
+                            <div class="form-group">
+                              <label for="example-date-input" class="form-control-label">Start Date</label>
+                              <input class="form-control" type="date" value="2020-09-04" id="startdate">
+                            </div>
+                            <div class="form-group">
+                              <label for="example-date-input" class="form-control-label">End Date</label>
+                              <input class="form-control" type="date" value="" id="enddate">
+                            </div>
+                            <div class="text-center">
+                              <button type="button" class="btn btn-primary my-4" onclick="GenerateCSV()">Download
+                                Report</button>
+                            </div>
+                          </form>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+              <div class="card card-stats" style="cursor: pointer;" onclick="BillDisplay()">
+                <!-- Card body -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Report</h5>
+                      <span class="h2 font-weight-bold mb-0">Paid User-Data</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                        <i class="ni ni-chart-bar-32"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0 text-sm">
+                  <span class="text-nowrap"></span>
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+
+
+      <div class="row">
+        <div class="col">
+          <div class="card bg-default shadow" id="mainrow">
+            <div class="card-header bg-transparent border-0">
+              <div class="row">
+                <div class="col-lg-6 col-7">
+                  <h6 class="h2 text-white d-inline-block mb-0">Images</h6>
+                </div>
+
+              </div>
+            </div>
+            <div class="table-responsive" style="overflow-y: hidden;">
+              <table class="table align-items-center table-dark table-flush">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">No. of Images Added</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody class="list" id="maintablecontents">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="card bg-default shadow" id="BillDataaa" style="display: none;">
+            <div class="card-header bg-transparent border-0">
+              <div class="row">
+                <div class="col-lg-6 col-7">
+                  <h6 class="h2 text-white d-inline-block mb-0">Bills</h6>
+                </div>
+
+              </div>
+            </div>
+            <div class="table-responsive" style="overflow-y: hidden;">
+              <table class="table align-items-center table-dark table-flush">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Reciept ID</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">PDF</th>
+
+                  </tr>
+                </thead>
+                <tbody class="list" id="BillDatacontents">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+      <div class="row" id="editrow" style="display: none;">
+        <div class="col">
+          <div class="card">
+
+            <!-- Card Header -->
+            <div class="card-header bg-transparent border-0" style="padding-bottom: inherit;">
+              <div class="row">
+                <div class="col-lg-6 col-7">
+                  <h6 class="h2 text-black d-inline-block mb-0" id="ImageName">${Name}</h6>
+                </div>
+                <div class="col-lg-6 col-5 text-right" id="ImageButton">
+                  <a href="#" class="btn btn-md btn-neutral" onclick="Adddata('${docid}')">Save</a>
+                </div>
+              </div>
+            </div>
+            <hr style="margin-bottom: 0;margin-top: 1rem;">
+            <!-- Card body -->
+            <div class="card-body">
+              <div id="Imagerow">
+
+              </div>
+              <div class="row">
+                <div class="col">
+                  <span class="btn btn-sm btn-dark" onclick="AddImageField('','0%',0)">Add Image Field</span>
+
+                  <!-- <span class="btn btn-sm btn-dark" onclick="AddQuestionFeild('Question')">Add Question Field</span> -->
+                  <span class="btn btn-sm btn-dark" onclick="DeleteField()">Delete Last Field</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <footer class="footer pt-0">
+      <div class="row align-items-center justify-content-lg-between">
+        <div class="col-lg-6">
+          <div class="copyright text-center  text-lg-left  text-muted">
+            &copy; 2020 <a href="" class="font-weight-bold ml-1" target="_blank">EPOCH ZERO</a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+            <li class="nav-item">
+              <a href="" class="nav-link" target="_blank">Epoch Zero</a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link" target="_blank">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link" target="_blank">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link" target="_blank">License</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <div class="container-fluid mt--6" style="display: none;">
+    <div class="row">
+      <div class="col-xl-8">
+        <div class="card bg-default">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col">
+                <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
+                <h5 class="h3 text-white mb-0">Sales value</h5>
+              </div>
+              <div class="col">
+                <ul class="nav nav-pills justify-content-end">
+                  <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales-dark"
+                    data-update='{"data":{"datasets":[{"data":[0, 20, 10, 30, 15, 40, 20, 60, 60]}]}}' data-prefix="$"
+                    data-suffix="k">
+                    <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
+                      <span class="d-none d-md-block">Month</span>
+                      <span class="d-md-none">M</span>
+                    </a>
+                  </li>
+                  <li class="nav-item" data-toggle="chart" data-target="#chart-sales-dark"
+                    data-update='{"data":{"datasets":[{"data":[0, 20, 5, 25, 10, 30, 15, 40, 40]}]}}' data-prefix="$"
+                    data-suffix="k">
+                    <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
+                      <span class="d-none d-md-block">Week</span>
+                      <span class="d-md-none">W</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- Chart -->
+            <div class="chart">
+              <!-- Chart wrapper -->
+              <canvas id="chart-sales-dark" class="chart-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4">
+        <div class="card">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
+                <h5 class="h3 mb-0">Total orders</h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- Chart -->
+            <div class="chart">
+              <canvas id="chart-bars" class="chart-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-8">
+        <div class="card">
+          <div class="card-header border-0">
+            <div class="row align-items-center">
+              <div class="col">
+                <h3 class="mb-0">Page visits</h3>
+              </div>
+              <div class="col text-right">
+                <a href="#!" class="btn btn-sm btn-primary">See all</a>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <!-- Projects table -->
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Page name</th>
+                  <th scope="col">Visitors</th>
+                  <th scope="col">Unique users</th>
+                  <th scope="col">Bounce rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    /argon/
+                  </th>
+                  <td>
+                    4,569
+                  </td>
+                  <td>
+                    340
+                  </td>
+                  <td>
+                    <i class="fas fa-arrow-up text-success mr-3"></i> 46,53%
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    /argon/index.html
+                  </th>
+                  <td>
+                    3,985
+                  </td>
+                  <td>
+                    319
+                  </td>
+                  <td>
+                    <i class="fas fa-arrow-down text-warning mr-3"></i> 46,53%
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    /argon/charts.html
+                  </th>
+                  <td>
+                    3,513
+                  </td>
+                  <td>
+                    294
+                  </td>
+                  <td>
+                    <i class="fas fa-arrow-down text-warning mr-3"></i> 36,49%
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    /argon/tables.html
+                  </th>
+                  <td>
+                    2,050
+                  </td>
+                  <td>
+                    147
+                  </td>
+                  <td>
+                    <i class="fas fa-arrow-up text-success mr-3"></i> 50,87%
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    /argon/profile.html
+                  </th>
+                  <td>
+                    1,795
+                  </td>
+                  <td>
+                    190
+                  </td>
+                  <td>
+                    <i class="fas fa-arrow-down text-danger mr-3"></i> 46,53%
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4">
+        <div class="card">
+          <div class="card-header border-0">
+            <div class="row align-items-center">
+              <div class="col">
+                <h3 class="mb-0">Social traffic</h3>
+              </div>
+              <div class="col text-right">
+                <a href="#!" class="btn btn-sm btn-primary">See all</a>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <!-- Projects table -->
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Referral</th>
+                  <th scope="col">Visitors</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    Facebook
+                  </th>
+                  <td>
+                    1,480
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="mr-2">60%</span>
+                      <div>
+                        <div class="progress">
+                          <div class="progress-bar bg-gradient-danger" role="progressbar" aria-valuenow="60"
+                            aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Facebook
+                  </th>
+                  <td>
+                    5,480
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="mr-2">70%</span>
+                      <div>
+                        <div class="progress">
+                          <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="70"
+                            aria-valuemin="0" aria-valuemax="100" style="width: 70%;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Google
+                  </th>
+                  <td>
+                    4,807
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="mr-2">80%</span>
+                      <div>
+                        <div class="progress">
+                          <div class="progress-bar bg-gradient-primary" role="progressbar" aria-valuenow="80"
+                            aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Instagram
+                  </th>
+                  <td>
+                    3,678
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="mr-2">75%</span>
+                      <div>
+                        <div class="progress">
+                          <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="75"
+                            aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    twitter
+                  </th>
+                  <td>
+                    2,645
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="mr-2">30%</span>
+                      <div>
+                        <div class="progress">
+                          <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="30"
+                            aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer pt-0">
+      <div class="row align-items-center justify-content-lg-between">
+        <div class="col-lg-6">
+          <div class="copyright text-center  text-lg-left  text-muted">
+            &copy; 2020 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative
+              Tim</a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+            <li class="nav-item">
+              <a href="https://www.creative-tim.com" class="nav-link" target="_blank">Creative Tim</a>
+            </li>
+            <li class="nav-item">
+              <a href="https://www.creative-tim.com/presentation" class="nav-link" target="_blank">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a href="http://blog.creative-tim.com" class="nav-link" target="_blank">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md" class="nav-link"
+                target="_blank">MIT License</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </div>
+  </div>
+  <!-- Argon Scripts -->
+  <!-- Core -->
+  <script src="../assets/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/js-cookie/js.cookie.js"></script>
+  <script src="../assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+  <script src="../assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+  <!-- Optional JS -->
+  <script src="../assets/vendor/chart.js/dist/Chart.min.js"></script>
+  <script src="../assets/vendor/chart.js/dist/Chart.extension.js"></script>
+  <!-- Argon JS -->
+  <script src="../assets/js/argon.js?v=1.2.0"></script>
+  <script>
+
+
+
+    var app, db, imgfileno = 0;
+    document.getElementById("enddate").value = changetohypen(nowdate());
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById("enddate").value = changetohypen(nowdate());
+      app = firebase.app();
+      console.log(app);
+      db = firebase.firestore();
+      // firebase.auth().onAuthStateChanged(function(user) {
+      //   if (user) {
+      //     checkAdmin();
+      //    } else {
+      //     console.log("not logged")
+      //     location.replace("/Admin/examples/login.html?a=dashboard.html")
+
+      //   }
+      // });
+      db.collection('Images').onSnapshot(snapshot => {
+        html = ``;
+        snapshot.forEach(doc => {
+
+          add = `
+                  <tr>
+                    <th><a href="#" class="text-white" onclick="viewdata('${doc.id}')"><u>${doc.data().Name}</u></a></th>
+                    <td>${doc.data().Image.length}</td>
+                    <td class="text-right"><a class="btn btn-sm btn-neutral  text-dark" href="#"onclick="viewdata('${doc.id}')" >Add</a></td>
+                  </tr>
+        `;
+          html = html + add;
+        });
+        document.getElementById('maintablecontents').innerHTML = html;
+      });
+
+
+
+    })
+
+    function viewdata(docid) {
+      db.collection("Images").doc(docid).get().then(snapshot => {
+        document.getElementById("ImageName").innerHTML = snapshot.data().Name
+        document.getElementById("ImageButton").innerHTML = `<a href="#" class="btn btn-md btn-neutral" onclick="Adddata('${docid}')" >Save</a>`;
+        document.getElementById("Imagerow").innerHTML = "";
+
+        snapshot.data().Image.forEach(element => {
+          AddImageField(element + "&a=" + Math.random(), "Uploaded", 100);
+        })
+        document.getElementById("editrow").style.display = "flex";
+      })
+    }
+
+    function Adddata(docid) {
+      imgfileno = 0;
+      ImagesUrl = document.getElementsByName("ImgUrl");
+      ImagesFile = document.getElementsByName("Imagefile");
+      progressbar = document.getElementsByName("progressbar");
+      progressno = document.getElementsByName("progressno");
+      ImageData = [];
+      var d = new Date();
+      var n = d.getTime();
+      for (let i = 0; i < ImagesFile.length; i++) {
+
+        if (ImagesFile[i].files[0] != undefined) {
+
+          imgfileno++;
+          ImageData.push(`https://firebasestorage.googleapis.com/v0/b/estudo-af035.appspot.com/o/Images%2F${docid}%2F${n}?alt=media`)
+          uploadimg(docid, n, ImagesFile[i].files[0], progressbar[i], progressno[i])
+          n++;
+        }
+        else if (ImagesUrl != "") {
+          ImageData.push(ImagesUrl[i].value);
+
+        }
+        else {
+          alret("Not Fully filled")
+          return;
+        }
+
+      }
+      db
+        .doc(`Images/${docid}`)
+        .set({ "Image": ImageData }, { "merge": true })
+        .then(function (doc) {
+          if (imgfileno == 0) {
+            alert("Updation Finished")
+            //ToggleBtw();
+            document.getElementById('editrow').style.display = "none";
+            console.log("reached inside Database finsih")
+          }
+
+        })
+        .catch(function (error) {
+
+        })
+    }
+
+    async function uploadimg(docid, timeunit, input, subjectprogressbar, subjectprogressno) {
+      var flag = 0;
+      console.log(input)
+
+      const app = firebase.app();
+      console.log(app)
+      const db = firebase.firestore();
+      var storageRef_image = firebase.storage().ref('Images/' + docid + '/' + timeunit);
+
+      uploadTask = storageRef_image.put(input);
+
+      uploadTask.on('state_changed', function (snapshot) {
+
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        //var elem = document.getElementById("myBar");   
+        if (Math.floor(progress) == 100 && flag == 0) {
+          subjectprogressbar.className = "progress-bar bg-success"
+          subjectprogressbar.style.width = '100%';
+          subjectprogressno.innerHTML = "Completed";
+          flag = 1;
+        }
+        else if (flag == 0) {
+          subjectprogressbar.style.width = Math.floor(progress) + '%';
+          subjectprogressno.innerHTML = Math.floor(progress) + '%';
+        }
+
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('Upload is running');
+            break;
+        }
+      }, function (error) {
+        // Handle unsuccessful uploads
+      }, function () {
+        imgfileno--;
+        if (imgfileno == 0) {
+          alert("Updation Finished")
+          //ToggleBtw();
+          document.getElementById('editrow').style.display = "none";
+          console.log("reached inside storage finsih")
+        }
+      });
+
+
+
+
+
+    }
+
+    function DeleteField() {
+      element = document.getElementById("Imagerow");
+      element.removeChild(element.lastChild);
+
+    }
+
+    function AddImageField(ImgUrl, Status, progress) {
+      html = `
+      <div class="col" id="Imagecol" >
+
+        <div class="custom-file" style="margin-top: 2%;margin-bottom: inherit;">
+          <input type="text" name="ImgUrl" value="${ImgUrl}" hidden>
+          <input type="file" class="custom-file-input" lang="en" accept="image/*" onchange="loadFile(event,this)" name="Imagefile">
+          <label class="custom-file-label" for="customFileLang">Select file</label>
+        </div>
+        <div class="progress-wrapper">
+        <div class="progress-info">
+          <div class="progress-label">
+            <span name="progressno">${Status}</span>
+          </div>
+          
+        </div>
+        <div class="progress">
+          <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${progress}%;" name="progressbar"></div>
+        </div>
+        </div>
+        <img id="output" style="width: 25%;margin-bottom: 2%;" src="${ImgUrl}">
+        <hr style="border-bottom: .3em solid black;"> 
+      </div>
+      `;
+
+      document.getElementById("Imagerow").insertAdjacentHTML('beforeend', html);
+    }
+
+
+    var loadFile = function (event, input) {
+
+      var output = document.getElementById('output');
+      console.log(input.nextSibling);
+      j = input.parentNode.nextSibling.nextSibling;
+      console.log(j)
+      j.nextSibling.nextSibling.src = URL.createObjectURL(event.target.files[0]);
+
+
+
+    };
+
+    function checkAdmin() {
+      firebase.auth().currentUser.getIdTokenResult()
+        .then((idTokenResult) => {
+          // Confirm the user is an Admin.
+          if (!!idTokenResult.claims.admin) {
+            // Show admin UI.
+            console.log("admin")
+          } else {
+            // Show regular user UI.
+            location.replace("/Admin/examples/login.html?a=dashboard.html")
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    function GenerateCSV() {
+      console.log("clicked")
+
+      startdate = hypenchange(document.getElementById("startdate").value)
+      enddate = hypenchange(document.getElementById("enddate").value)
+      console.log(startdate)
+      console.log(enddate)
+      function convertToCSV(objArray) {
+        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+        var str = '';
+
+        for (var i = 0; i < array.length; i++) {
+          var line = '';
+          for (var index in array[i]) {
+            if (line != '') line += ','
+
+            line += array[i][index];
+          }
+
+          str += line + '\r\n';
+        }
+
+        return str;
+      }
+
+      function exportCSVFile(headers, items, fileTitle) {
+        if (headers) {
+          items.unshift(headers);
+        }
+
+        // Convert Object to JSON
+        var jsonObject = JSON.stringify(items);
+
+        var csv = convertToCSV(jsonObject);
+
+        var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) { // IE 10+
+          navigator.msSaveBlob(blob, exportedFilenmae);
+        } else {
+          var link = document.createElement("a");
+          if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", exportedFilenmae);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+        }
+      }
+
+
+
+
+
+
+
+      //var fileTitle = 'orders'; // or 'my-unique-title'
+
+      //exportCSVFile(headers, itemsFormatted, fileTitle); // call the exportCSVFile() function to process the JSON and trigger the download
+
+      db.collection("User").where("Join_Date", '>=', startdate).where("Join_Date", '<=', enddate).get()
+        .then(snapshot => {
+
+          //window.open(snap.data().Report+"?startdate="+startdate+"&enddate="+enddate);
+          Userdata = []
+          snapshot.forEach(doc => {
+            Userdata.push(doc.data());
+          })
+          console.log(Userdata)
+          return Userdata
+
+        })
+        .then(snap => {
+          if (snap.length == 0) {
+            alert("No User Records");
+          }
+          else {
+            var headers = {
+              Name: "Name",
+              PhoneNo: "PhoneNo",
+              userid: "UserId",
+              Age: 'Age', // remove commas to avoid errors
+              DOB: "DOB",
+              Education: "Education".replace(/,/g, ''),
+              Email: "Email",
+              Gender: "Gender",
+              Join_Date: "Join Date",
+              LastLoggedIn: "LastLoggedIn",
+            };
+            var itemsFormatted = [];
+
+            // format the data
+            snap.forEach((item) => {
+              itemsFormatted.push({
+                Name: item.Name,
+                PhoneNo: item.PhoneNo,
+                userid: item.userid,
+                Age: item.Age, // remove commas to avoid errors
+                DOB: item.DOB,
+                Education: item.Education,
+                Email: item.Email,
+                Gender: item.Gender,
+                Join_Date: item.Join_Date,
+                LastLoggedIn: item.LastLoggedIn,
+              });
+            });
+            var fileTitle = 'User_Report'; // or 'my-unique-title'
+            exportCSVFile(headers, itemsFormatted, fileTitle);
+          }
+        })
+    }
+    //https://us-central1-estudo-af035.cloudfunctions.net/testsdsd333
+    function nowdate() {
+      var today = new Date();
+      var dd = today.getDate();
+
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      today = yyyy + '/' + mm + '/' + dd;
+      return today;
+    }
+    function yearreverse(datestring) {
+      exparr = datestring.split("/");
+      exparr = exparr.reverse();
+      return exparr.join("/");
+    }
+    function hypenchange(datestring) {
+      exparr = datestring.split("-");
+      return exparr.join("/");
+    }
+    function changetohypen(datestring) {
+      exparr = datestring.split("/");
+      return exparr.join("-");
+    }
+
+
+    function BillDisplay() {
+      console.log("clicked")
+      db.collection("Admin").doc("Admin_Info").get()
+        .then(snap => {
+          html = "";
+          i = 1;
+          snap.data().Bill.forEach(doc => {
+            html = html + `
+      <tr>
+        <th scope="col" >${i++}</th>
+        <th scope="col" >${doc.Order_id}</th>
+        <th scope="col">${doc.Date}</th>
+        <th scope="col" ><a href="${doc.PdfUrl}" target="blank"><u>View</u></th>
+      </tr>
+      `
+          })
+          document.getElementById('BillDatacontents').innerHTML = html;
+          //document.getElementById("editrow").style.display="flex";
+
+          document.getElementById('BillDataaa').style.display = "block";
+          document.getElementById("mainrow").style.display = "none";
+
+
+        })
+    }
+
+
+
+
+
+
+  </script>
+</body>
+
+</html>
