@@ -1,0 +1,173 @@
+<!--
+=========================================================
+* Argon Dashboard - v1.2.0
+=========================================================
+* Product Page: https://www.creative-tim.com/product/argon-dashboard
+
+* Copyright  Creative Tim (http://www.creative-tim.com)
+* Coded by www.creative-tim.com
+=========================================================
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+    <meta name="author" content="Creative Tim">
+    <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
+    <!-- Favicon -->
+    <link rel="icon" href="../assets/img/brand/favicon.png" type="image/png">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+    <!-- Icons -->
+    <link rel="stylesheet" href="../assets/vendor/nucleo/css/nucleo.css" type="text/css">
+    <link rel="stylesheet" href="../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
+    <!-- Argon CSS -->
+    <link rel="stylesheet" href="../assets/css/argon.css?v=1.2.0" type="text/css">
+
+    <script defer src="/__/firebase/7.7.0/firebase-app.js"></script>
+    <script defer src="/__/firebase/7.7.0/firebase-firestore.js"></script>
+    <script defer src="/__/firebase/7.7.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/init.js"></script>
+</head>
+
+<body class="bg-default">
+    <!-- Navbar -->
+
+    <!-- Main content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header py-7 py-lg-8 pt-lg-9" style="background: #3B1C83;">
+            <div class="container">
+                <div class="header-body text-center mb-7">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-5 col-lg-6 col-md-8 px-5">
+                            <!--  <img style="width: 55px;" src="../assets/img/brand/Group 1615.png"> -->
+
+                            <h1
+                                style="display: inline;margin-left: 10px;vertical-align: top;color: whitesmoke;font-size:xx-large;">
+                                Set up your Profile</h1>
+                            <!--<p class="text-lead text-white">Use these awesome forms to login or create new account in your project for free.</p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="separator separator-bottom separator-skew zindex-100">
+                <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+                </svg>
+            </div>
+        </div>
+        <!-- Page content -->
+        <div class="container mt--8 pb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-7">
+                    <div class="card bg-secondary border-0 mb-0" style="box-shadow: 0px 0px 8px  #888888;">
+                        <div class="card-header bg-transparent pb-5" id="profile">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <footer class="py-5" id="footer-main">
+            <div class="container">
+                <div class="row align-items-center justify-content-xl-between">
+                    <div class="col-xl-6">
+                        <div class="copyright text-center text-xl-left text-muted">
+                            Mini Project Done by<a href="" class="font-weight-bold ml-1" target="_blank">Arshajith B</a>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Argon Scripts -->
+        <!-- Core -->
+        <script src="../assets/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="../assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/vendor/js-cookie/js.cookie.js"></script>
+        <script src="../assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+        <script src="../assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+        <!-- Argon JS -->
+        <script src="../assets/js/argon.js?v=1.2.0"></script>
+        <script>
+            let app, db, params = [];
+            document.addEventListener('DOMContentLoaded', function () {
+                app = firebase.app();
+                console.log(app);
+                db = firebase.firestore();
+                url = window.location.href;
+                console.log(url.indexOf("?"))
+                if (url.indexOf("?") == -1) {
+                    params.push("a");
+                    params.push("dashboard.html");
+                }
+                else {
+                    var queryStart = url.indexOf("?") + 1;
+                    queryEnd = url.indexOf("#") + 1 || url.length + 1;
+                    query = url.slice(queryStart, queryEnd - 1);
+                    params = query.split("=", 2);
+                }
+                firebase.auth().onAuthStateChanged(async function (user) {
+                    if (user) {
+                        const userData = await db.collection('Users').doc(user.uid).get();
+                        let s = `<div class="row">
+                                    <div class="col">
+                                        <div class="alert alert-success" role="alert">
+                                            <strong>Hey ${userData.data().Name}!</strong> Type something!
+                                        </div>
+                                        <form>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Write a large text here ..."></textarea>
+                                        </form>
+                                        <div class="form-group" style="margin-top:20px;">
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="addPost('${user.uid}')" id="signUp-button">Post</button>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        document.getElementById('profile').innerHTML = s;
+                    } else {
+                        location.replace('/login.html');
+                    }
+                });
+
+            })
+
+            function addPost(uid) {
+                document.getElementById('signUp-button').disabled = true;
+                console.log(uid);
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('name').value;
+                const phone = document.getElementById('name').value;
+
+                if (name === '' || email === '' || phone === '') {
+                    const s = `<div class="alert alert-warning" role="alert">
+                            <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+                            <span class="alert-inner--text"><strong>Warning!</strong> All fields are required!</span>
+                          </div>`;
+                    document.getElementById('alert').innerHTML = s;
+                    return;
+                }
+
+                db.collection('Users').doc(uid).set({
+                    Name: name,
+                    Email: email,
+                    Phone: phone
+                }).then(doc => {
+                    location.replace("../../index.html")
+                }).catch(err => {
+                    return console.log(err);
+                })
+            }
+
+
+        </script>
+</body>
+
+</html>
