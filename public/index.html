@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Start your Development with a Dashboard">
     <meta name="author" content="Epoch Zero.">
-    <title>Estudo</title>
+    <title>Comment Evaluation System</title>
     <meta property="og:image" content="../assets/img/brand/favicon.png">
 
     <!-- Favicon -->
@@ -140,7 +140,8 @@
                 if (user) {
                     document.getElementById('the-body').style.display = 'block';
                     const userData = await db.collection('Users').doc(user.uid).get();
-                    document.getElementById('user-name').innerHTML = userData.data().Name;
+                    // document.getElementById('user-name').innerHTML = userData.data().Name;
+                    document.getElementById('HeadingID').innerHTML = `Welcome ${userData.data().Name}!`;
                     showPost(true, null);
                 } else {
                     console.log("not logged")
@@ -156,7 +157,7 @@
 
         async function showPost(flag, startAfter) {
             if (flag) {
-                const postDatas = await db.collection('Posts').orderBy('Index').limit(10).get();
+                const postDatas = await db.collection('Posts').orderBy('Index', 'desc').limit(10).get();
                 const promises = [];
                 postDatas.forEach(post => {
                     promises.push(db.collection('Users').doc(post.data().UserId).get());
@@ -174,7 +175,7 @@
                                     <div class="card-body">
                                         <a href="#">
                                             <div class="row">
-                                                <div class="card" style="width: 18rem;margin-bottom: 0%;">
+                                                <div class="card" style="width: 100%;margin-bottom: 0%;">
                                                     <!--<img class="card-img-top" style="height: 20px;"
                                                         src="Admin/assets/img/theme/header-background.jpg"
                                                         alt="Card image cap">-->
@@ -187,8 +188,7 @@
                                                             <p class="card-text">${post.data().Content.slice(0, 60)}.....</p >
                                                         </div >
                                                     </div >
-                    <button type="button" class="btn btn-outline-primary">View
-                        Post</button>
+                                                    <button type="button" class="btn btn-outline-primary">View Post</button>
                                                 </div >
                                             </div >
 
@@ -212,7 +212,7 @@
             <div class="sidenav-header  align-items-center">
                 <a class="navbar-brand" href="javascript:void(0)" style="padding-left: 0px;">
                     <h1
-                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color:lightslategray;border-style:solid;border-color: lightslategray;padding-left: 20px;padding-right: 20px;">
+                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;color:lightslategray;border-style:solid;border-color: lightslategray;padding-left: 20px;padding-right: 20px;margin-left: 20px;">
                         C E S</h1>
                 </a>
             </div>
