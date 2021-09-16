@@ -120,6 +120,8 @@
                         const userData = await db.collection('Users').doc(user.uid).get();
                         let s = `<div class="row">
                                     <div class="col">
+                                        <div id="alert">
+                                        </div>
                                         <div class="alert alert-success" role="alert">
                                             <strong>Hey ${userData.data().Name}!</strong> Type something!
                                         </div>
@@ -150,6 +152,7 @@
                             <span class="alert-inner--text"><strong>Warning!</strong> Write something!</span>
                           </div>`;
                     document.getElementById('alert').innerHTML = s;
+                    document.getElementById('signUp-button').disabled = false;
                     return;
                 }
 

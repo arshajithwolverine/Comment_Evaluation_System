@@ -49,7 +49,7 @@
 
                             <h1
                                 style="display: inline;margin-left: 10px;vertical-align: top;color: whitesmoke;font-size:xx-large;">
-                                Set up your Profile</h1>
+                                Add Post</h1>
                             <!--<p class="text-lead text-white">Use these awesome forms to login or create new account in your project for free.</p> -->
                         </div>
                     </div>
@@ -67,11 +67,27 @@
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-7">
                     <div class="card bg-secondary border-0 mb-0" style="box-shadow: 0px 0px 8px  #888888;">
-                        <div class="card-header bg-transparent pb-5" id="profile">
+                        <div class="card-header bg-transparent pb-5" id="post">
 
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-5 col-md-7">
+                    <div class="card bg-secondary border-0 mb-0" style="box-shadow: 0px 0px 8px  #888888;height: 70%;">
+                        <div class="card-header bg-transparent pb-5" id="comments">
+
+                        </div>
+                    </div>
+                    <div class="card bg-secondary border-0 mb-0"
+                        style="box-shadow: 0px 0px 8px  #888888;margin-top: 20px;">
+                        <div class="card-header bg-transparent pb-5" id="add-comment">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center" style="margin-top: 20px;">
+
             </div>
         </div>
         <!-- Footer -->
@@ -80,7 +96,7 @@
                 <div class="row align-items-center justify-content-xl-between">
                     <div class="col-xl-6">
                         <div class="copyright text-center text-xl-left text-muted">
-                            <!--Mini Project Done by<a href="" class="font-weight-bold ml-1" target="_blank">Arshajith B</a>-->
+
                         </div>
                     </div>
                     <div class="col-xl-6">
@@ -115,30 +131,31 @@
                     query = url.slice(queryStart, queryEnd - 1);
                     params = query.split("=", 2);
                 }
-                firebase.auth().onAuthStateChanged(function (user) {
+                firebase.auth().onAuthStateChanged(async function (user) {
                     if (user) {
-                        let s = `<div class="row">
+                        const url_string = window.location.href;
+                        const url = new URL(url_string);
+                        var postid = url.searchParams.get("id");
+                        const postData = await db.collection('Posts').doc(postid).get();
+                        let postHtml = `<div class="row">
                                     <div class="col">
                                         <div id="alert">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="form-control-label">Name</label>
-                                            <input class="form-control" type="text" id="name">
+                                        <div class="alert alert-success" role="alert">
+                                            <strong>Hey !</strong> Type something!
                                         </div>
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="form-control-label">Email</label>
-                                            <input class="form-control" type="text" id="email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="form-control-label">Phone</label>
-                                            <input class="form-control" type="text" id="phone">
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-primary btn-sm" onclick="signUp('${user.uid}')" id="signUp-button">Continue</button>
+                                        <form>
+                                            <textarea class="form-control" id="content" rows="10" placeholder="loading ..."></textarea>
+                                        </form>
+                                        <div class="form-group" style="margin-top:20px;">
+                                            <button type="button" class="btn btn-primary btn-sm" style="width:30%;height:25%;align-items: center;" id="signUp-button">Post</button>
                                         </div>
                                     </div>
                                 </div>`;
-                        document.getElementById('profile').innerHTML = s;
+
+                        const userData = await db.collection('Users').doc(user.uid).get();
+
+                        document.getElementById('post').innerHTML = postHtml;
                     } else {
                         location.replace('/login.html');
                     }
@@ -146,32 +163,90 @@
 
             })
 
-            function signUp(uid) {
+            function addPost(uid) {
                 document.getElementById('signUp-button').disabled = true;
                 console.log(uid);
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
+                const content = document.getElementById('content').value;
 
-                if (name === '' || email === '' || phone === '') {
+                if (content === '') {
                     const s = `<div class="alert alert-warning" role="alert">
                             <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
-                            <span class="alert-inner--text"><strong>Warning!</strong> All fields are required!</span>
+                            <span class="alert-inner--text"><strong>Warning!</strong> Write something!</span>
                           </div>`;
                     document.getElementById('alert').innerHTML = s;
                     document.getElementById('signUp-button').disabled = false;
                     return;
                 }
 
-                db.collection('Users').doc(uid).set({
-                    Name: name,
-                    Email: email,
-                    Phone: phone
+                db.collection('Posts').add({
+                    UserId: uid,
+                    Content: content,
+                    Date: nowdate(),
+                    Time: nowtime(),
+                    Index: new Date().getTime()
                 }).then(doc => {
                     location.replace("../../index.html")
                 }).catch(err => {
                     return console.log(err);
                 })
+            }
+
+            function nowdate() {
+
+                let today = new Date();
+                let currentOffset = today.getTimezoneOffset();
+                let ISTOffset = 330;
+                today = new Date(today.getTime() + (ISTOffset + currentOffset) * 60000);
+
+                let dd = today.getDate();
+                let mm = today.getMonth() + 1;
+                let yyyy = today.getFullYear();
+
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+
+
+                today = dd + '/' + mm + '/' + yyyy;//`${day}, ${dd} ${mm} ${yyyy}` //
+                return today;
+            }
+
+            function nowtime() {
+
+                let today = new Date();
+                let currentOffset = today.getTimezoneOffset();
+                let ISTOffset = 330;
+                today = new Date(today.getTime() + (ISTOffset + currentOffset) * 60000);
+
+                let hh = today.getHours();
+                let mm = today.getMinutes() + 1;
+                let ss = today.getSeconds();
+
+                let zone = 'pm'
+                if (hh < 12) {
+                    zone = 'am'
+                } else if (hh > 12) {
+                    hh = hh - 12;
+                }
+
+
+                if (hh < 10) {
+                    hh = '0' + hh;
+                }
+
+
+
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+
+
+                today = hh + ':' + mm + ' ' + zone;//`${day}, ${dd} ${mm} ${yyyy}` //
+                return today;
             }
 
 

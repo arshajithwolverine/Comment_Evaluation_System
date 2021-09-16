@@ -156,8 +156,12 @@
         }
 
         async function showPost(flag, startAfter) {
+            console.log('Refreshing')
+            console.log(flag);
+            console.log(startAfter);
             if (flag) {
-                const postDatas = await db.collection('Posts').orderBy('Index', 'desc').limit(10).get();
+                console.log('If part');
+                const postDatas = await db.collection('Posts').orderBy('Index', 'desc').limit(12).get();
                 const promises = [];
                 postDatas.forEach(post => {
                     promises.push(db.collection('Users').doc(post.data().UserId).get());
@@ -169,6 +173,7 @@
                 })
                 let count = 0;
                 let html = '';
+                let lastIndex = '';
                 postDatas.forEach(post => {
                     const s = `<div class="col-xl-3 col-md-6">
                                 <div class="card card-stats">
@@ -188,7 +193,7 @@
                                                             <p class="card-text">${post.data().Content.slice(0, 60)}.....</p >
                                                         </div >
                                                     </div >
-                                                    <button type="button" class="btn btn-outline-primary">View Post</button>
+                                                    <button type="button" class="btn btn-outline-primary" onclick=viewPost('${post.id}')>View Post</button>
                                                 </div >
                                             </div >
 
@@ -198,11 +203,75 @@
                             </div >`
                     html += s;
                     count += 1;
+                    lastIndex = post.data().Index;
                 });
                 document.getElementById('posts').innerHTML = html;
+                document.getElementById('next').innerHTML = `
+                                <button class="btn btn-outline-default" type="button" style="margin-bottom: 10px;"
+                                    onclick="showPost(${false},'${lastIndex}')">
+                                    <span class="btn-inner--icon"><i class="ni ni-image"></i></span>
+                                    <span class="btn-inner--text">View More</span>
+                                </button>
+                `;
             } else {
+                console.log('Else part');
+                const postDatas = await db.collection('Posts').orderBy('Index', 'desc').startAfter(Number(startAfter)).limit(12).get();
+                const promises = [];
+                postDatas.forEach(post => {
+                    promises.push(db.collection('Users').doc(post.data().UserId).get());
+                })
+                const users = await Promise.all(promises);
+                const userNames = [];
+                users.forEach(user => {
+                    userNames.push(user.data().Name);
+                })
+                let count = 0;
+                let html = '';
+                let lastIndex = '';
+                postDatas.forEach(post => {
+                    const s = `<div class="col-xl-3 col-md-6">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <a href="#">
+                                            <div class="row">
+                                                <div class="card" style="width: 100%;margin-bottom: 0%;">
+                                                    <!--<img class="card-img-top" style="height: 20px;"
+                                                        src="Admin/assets/img/theme/header-background.jpg"
+                                                        alt="Card image cap">-->
+                                                    <div class="card-body">
+                                                        <div style="height: 150px;">
+                                                            <h5 class="card-title">${userNames[count]} 
+                                                                <span class="badge badge-pill badge-primary">${post.data().Date}</span> 
+                                                                <span class="badge badge-pill badge-primary">${post.data().Time}</span>
+                                                            </h5>
+                                                            <p class="card-text">${post.data().Content.slice(0, 60)}.....</p >
+                                                        </div >
+                                                    </div >
+                                                    <button type="button" class="btn btn-outline-primary" onclick=viewPost('${post.id}'>View Post</button>
+                                                </div >
+                                            </div >
 
+                                        </a >
+                                    </div >
+                                </div >
+                            </div >`
+                    html += s;
+                    count += 1;
+                    lastIndex = post.data().Index;
+                });
+                document.getElementById('posts').insertAdjacentHTML('beforeend', html);
+                document.getElementById('next').innerHTML = `
+                                <button class="btn btn-outline-default" type="button" style="margin-bottom: 10px;"
+                                    onclick="showPost(${false},'${lastIndex}')">
+                                    <span class="btn-inner--icon"><i class="ni ni-image"></i></span>
+                                    <span class="btn-inner--text">View More</span>
+                                </button>
+                `;
             }
+        }
+
+        function viewPost(docid) {
+            location.replace(`Admin/CES_html/viewPost.html?id=${docid}`);
         }
     </script>
 
@@ -336,17 +405,26 @@
                                 <!-- <a  class="btn btn-sm btn-neutral">Filters</a> -->
                             </div>
                         </div>
-
-                        <button class="btn btn-default" type="button" style="margin-bottom: 10px;"
-                            onclick="addpostpage()">
-                            <span class="btn-inner--icon"><i class="ni ni-image"></i></span>
-                            <span class="btn-inner--text">Add Post</span>
-                        </button>
+                        <div class="row">
+                            <button class="btn btn-default" type="button" style="margin-bottom: 10px;"
+                                onclick="addpostpage()">
+                                <span class="btn-inner--icon"><i class="ni ni-image"></i></span>
+                                <span class="btn-inner--text">Add Post</span>
+                            </button>
+                            <div id='new-post'>
+                                <button class="btn btn-outline-default" type="button" style="margin-bottom: 10px;"
+                                    onclick="showPost(true,null)">
+                                    <span class="btn-inner--icon"><i class="ni ni-image"></i></span>
+                                    <span class="btn-inner--text">Refresh Posts</span>
+                                </button>
+                            </div>
+                        </div>
 
                         <div class="row" id="posts">
 
 
                         </div>
+                        <div id="next"></div>
                     </div>
                 </div>
 
