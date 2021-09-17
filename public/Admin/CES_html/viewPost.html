@@ -47,9 +47,15 @@
                         <div class="col-xl-5 col-lg-6 col-md-8 px-5">
                             <!--  <img style="width: 55px;" src="../assets/img/brand/Group 1615.png"> -->
 
-                            <h1
-                                style="display: inline;margin-left: 10px;vertical-align: top;color: whitesmoke;font-size:xx-large;">
-                                Add Post</h1>
+
+                            <button type="button" class="btn btn-primary btn-lg"
+                                style="background-color: #3B1C83;border-color: #3B1C83;" onclick="goBack()">
+                                <h1
+                                    style="display: inline;margin-left: 10px;vertical-align: top;color: whitesmoke;font-size:xx-large;">
+                                    Go Back
+                                </h1>
+                            </button>
+
                             <!--<p class="text-lead text-white">Use these awesome forms to login or create new account in your project for free.</p> -->
                         </div>
                     </div>
@@ -68,20 +74,22 @@
                 <div class="col-lg-5 col-md-7">
                     <div class="card bg-secondary border-0 mb-0" style="box-shadow: 0px 0px 8px  #888888;">
                         <div class="card-header bg-transparent pb-5" id="post">
-
+                            <span class="nav-link-text">Loading...</span>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-7">
-                    <div class="card bg-secondary border-0 mb-0" style="box-shadow: 0px 0px 8px  #888888;height: 70%;">
-                        <div class="card-header bg-transparent pb-5" id="comments">
-
+                    <div class="card bg-secondary border-0 mb-0"
+                        style="box-shadow: 0px 0px 8px  #888888;height: 67.5%;">
+                        <div class="card-header bg-transparent pb-5" style="overflow: scroll;height:308px;"
+                            id="comments">
+                            <span class="nav-link-text">Loading...</span>
                         </div>
                     </div>
                     <div class="card bg-secondary border-0 mb-0"
                         style="box-shadow: 0px 0px 8px  #888888;margin-top: 20px;">
                         <div class="card-header bg-transparent pb-5" id="add-comment">
-
+                            <span class="nav-link-text">Loading...</span>
                         </div>
                     </div>
                 </div>
@@ -115,6 +123,9 @@
         <script src="../assets/js/argon.js?v=1.2.0"></script>
         <script>
             let app, db, params = [];
+            function goBack() {
+                location.replace('../../index.html')
+            }
             document.addEventListener('DOMContentLoaded', function () {
                 app = firebase.app();
                 console.log(app);
@@ -137,25 +148,64 @@
                         const url = new URL(url_string);
                         var postid = url.searchParams.get("id");
                         const postData = await db.collection('Posts').doc(postid).get();
+                        const userData = await db.collection('Users').doc(postData.data().UserId).get();
                         let postHtml = `<div class="row">
                                     <div class="col">
                                         <div id="alert">
                                         </div>
                                         <div class="alert alert-success" role="alert">
-                                            <strong>Hey !</strong> Type something!
+                                            <strong>${userData.data().Name}</strong>
                                         </div>
                                         <form>
-                                            <textarea class="form-control" id="content" rows="10" placeholder="loading ..."></textarea>
+                                            <textarea class="form-control" id="content" rows="13" placeholder="loading ..." disabled>${postData.data().Content}</textarea>
                                         </form>
-                                        <div class="form-group" style="margin-top:20px;">
-                                            <button type="button" class="btn btn-primary btn-sm" style="width:30%;height:25%;align-items: center;" id="signUp-button">Post</button>
-                                        </div>
+
                                     </div>
                                 </div>`;
-
-                        const userData = await db.collection('Users').doc(user.uid).get();
-
                         document.getElementById('post').innerHTML = postHtml;
+
+                        //comment showing
+                        db.collection('Posts').doc(postid).collection('Comments').orderBy('Index', 'desc').onSnapshot(async snap => {
+                            const promises = [];
+                            snap.forEach(comment => {
+                                promises.push(db.collection('Users').doc(comment.data().UserId).get());
+                            });
+                            const users = await Promise.all(promises);
+                            const userNames = [];
+                            users.forEach(user => {
+                                userNames.push(user.data().Name);
+                            })
+                            let count = 0;
+                            let html = '';
+                            snap.forEach(comment => {
+                                let s = `
+                                <div class="card-body">
+                                    <div>
+                                        <h5 class="card-title">${userNames[count]} 
+                                            <span class="badge badge-pill badge-primary">${comment.data().Date}</span> 
+                                            <span class="badge badge-pill badge-primary">${comment.data().Time}</span>
+                                        </h5>
+                                        <p class="card-text">${comment.data().Comment}.....</p >
+                                    </div >
+                                </div >
+                                `;
+                                html += s;
+                            })
+                            document.getElementById('comments').innerHTML = html;
+                        })
+
+                        const adminUser = await db.collection('Users').doc(user.uid).get();
+                        let commentAddHtml = `
+                                        <div class="input-group mb-4" style="margin-bottom:0px !important">
+                                            <input class="form-control" placeholder="Comment" type="text" id="user-comment">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-icon btn-2 btn-primary" type="button" onclick="commentAdd('${postid}','${user.uid}')" id="comment-add-button">
+	                                                <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                        `;
+                        document.getElementById('add-comment').innerHTML = commentAddHtml;
                     } else {
                         location.replace('/login.html');
                     }
@@ -163,13 +213,39 @@
 
             })
 
+            function commentAdd(postId, adminId) {
+                document.getElementById('comment-add-button').disabled = true;
+                console.log(postId);
+                const content = document.getElementById('user-comment').value;
+
+                if (content === '') {
+                    document.getElementById('user-comment').placeholder = 'Type someting !!!'
+                    document.getElementById('comment-add-button').disabled = false;
+                    return;
+                }
+
+                db.collection('Posts').doc(postId).collection('Comments').add({
+                    UserId: adminId,
+                    Comment: content,
+                    Date: nowdate(),
+                    Time: nowtime(),
+                    Index: new Date().getTime()
+                }).then(doc => {
+                    console.log('Comment added')
+                    document.getElementById('user-comment').value = '';
+                    document.getElementById('comment-add-button').disabled = false;
+                }).catch(err => {
+                    return console.log(err);
+                })
+            }
+
             function addPost(uid) {
                 document.getElementById('signUp-button').disabled = true;
                 console.log(uid);
                 const content = document.getElementById('content').value;
 
                 if (content === '') {
-                    const s = `<div class="alert alert-warning" role="alert">
+                    const s = `<div class="alert alert-warning" role="alert" style="margin-top:20px">
                             <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
                             <span class="alert-inner--text"><strong>Warning!</strong> Write something!</span>
                           </div>`;
