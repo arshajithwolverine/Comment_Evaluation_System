@@ -80,8 +80,8 @@
                 </div>
                 <div class="col-lg-5 col-md-7">
                     <div class="card bg-secondary border-0 mb-0"
-                        style="box-shadow: 0px 0px 8px  #888888;height: 67.5%;">
-                        <div class="card-header bg-transparent pb-5" style="overflow: scroll;height:308px;"
+                        style="box-shadow: 0px 0px 8px  #888888;height: 72.1%;">
+                        <div class="card-header bg-transparent pb-5" style="overflow: scroll;height:400px;"
                             id="comments">
                             <span class="nav-link-text">Loading...</span>
                         </div>
@@ -121,6 +121,8 @@
         <script src="../assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
         <!-- Argon JS -->
         <script src="../assets/js/argon.js?v=1.2.0"></script>
+        <!-- axios -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
             let app, db, params = [];
             function goBack() {
@@ -157,7 +159,7 @@
                                             <strong>${userData.data().Name}</strong>
                                         </div>
                                         <form>
-                                            <textarea class="form-control" id="content" rows="14" placeholder="loading ..." disabled>${postData.data().Content}</textarea>
+                                            <textarea class="form-control" id="content" rows="14" placeholder="loading ..." style="font-size:large;font-weight:bold" disabled>${postData.data().Content}</textarea>
                                         </form>
 
                                     </div>
@@ -178,18 +180,176 @@
                             let count = 0;
                             let html = '';
                             snap.forEach(comment => {
-                                let s = `
-                                <div class="card-body">
-                                    <div>
-                                        <h5 class="card-title">${userNames[count]} 
-                                            <span class="badge badge-pill badge-primary">${comment.data().Date}</span> 
-                                            <span class="badge badge-pill badge-primary">${comment.data().Time}</span>
+                                if (comment.data().Prediction !== undefined) {
+                                    const pred = comment.data().Prediction;
+                                    if (pred.sentiment === 'Positive') {
+                                        let s = `
+                                                <div class="card-body" data-toggle="modal" data-target="#exampleModal${count}">
+                                                    <div data-toggle="modal" data-target="#exampleModal${count}">
+                                                        <h5 class="card-title" data-toggle="modal" data-target="#exampleModal${count}">${userNames[count]} 
+                                                            <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal${count}">${comment.data().Date}</span> 
+                                                            <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal${count}">${comment.data().Time}</span>
+
+                                                            <span class="badge badge-pill badge-success" data-toggle="modal" data-target="#exampleModal${count}">Positive</span>
+
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="exampleModal${count}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <div class="alert alert-success" role="alert">
+                                                                        <strong>Positive Comment</strong>
+                                                                    </div>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p class="card-text" style="font-weight:bold">${comment.data().Comment}</p >
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p class="card-text">Predicted with a confidence of <b style="font-weight:bold">${Math.round(pred.confidence * 10000) / 100}%</b></p >
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                            <!-- Modal End -->
+
+                                                        </h5>
+                                                        <p class="card-text">${comment.data().Comment}</p >
+                                                    </div >
+                                                </div >
+                                                `;
+                                        html += s;
+                                    } else if (pred.sentiment === 'Negative') {
+                                        let s = `
+                                                <div class="card-body" data-toggle="modal" data-target="#exampleModal${count}">
+                                                    <div data-toggle="modal" data-target="#exampleModal${count}">
+                                                        <h5 class="card-title" data-toggle="modal" data-target="#exampleModal${count}">${userNames[count]} 
+                                                            <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal${count}">${comment.data().Date}</span> 
+                                                            <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal${count}">${comment.data().Time}</span>
+
+                                                            <span class="badge badge-pill badge-danger" data-toggle="modal" data-target="#exampleModal${count}">Negative</span>
+
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="exampleModal${count}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <div class="alert alert-danger" role="alert">
+                                                                        <strong>Negative Comment</strong>
+                                                                    </div>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <span><p class="card-text" style="font-weight:bold">${comment.data().Comment}</p ></span>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p class="card-text">Predicted with a confidence of <b style="font-weight:bold">${Math.round(pred.confidence * 10000) / 100}%</b></p >
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                            <!-- Modal End -->
+
+                                                        </h5>
+                                                        <p class="card-text">${comment.data().Comment}</p >
+                                                    </div >
+                                                </div >
+                                                `;
+                                        html += s;
+                                    } else if (pred.sentiment === 'Neutral') {
+                                        let s = `
+                                                <div class="card-body" data-toggle="modal" data-target="#exampleModal${count}">
+                                                    <div data-toggle="modal" data-target="#exampleModal${count}">
+                                                        <h5 class="card-title" data-toggle="modal" data-target="#exampleModal${count}">${userNames[count]} 
+                                                            <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal${count}">${comment.data().Date}</span> 
+                                                            <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal${count}">${comment.data().Time}</span>
+
+                                                            <span class="badge badge-pill badge-info" data-toggle="modal" data-target="#exampleModal${count}">Neutral</span>
+
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="exampleModal${count}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <div class="alert alert-info" role="alert">
+                                                                        <strong>Neutral Comment</strong>
+                                                                    </div>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p class="card-text" style="font-weight:bold">${comment.data().Comment}</p >
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p class="card-text">Predicted with a confidence of <b style="font-weight:bold">${Math.round(pred.confidence * 10000) / 100}%</b></p >
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                            <!-- Modal End -->
+
+                                                        </h5>
+                                                        <p class="card-text">${comment.data().Comment}</p >
+                                                    </div >
+                                                </div >
+                                                `;
+                                        html += s;
+                                    }
+                                } else {
+                                    let s = `
+                                <div class="card-body" data-toggle="modal" data-target="#exampleModal${count}">
+                                    <div data-toggle="modal" data-target="#exampleModal${count}">
+                                        <h5 class="card-title" data-toggle="modal" data-target="#exampleModal${count}">${userNames[count]} 
+                                            <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal${count}">${comment.data().Date}</span> 
+                                            <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#exampleModal${count}">${comment.data().Time}</span>
+                                            <span class="badge badge-pill badge-warning" data-toggle="modal" data-target="#exampleModal${count}">Server Offline</span>
+
+                                            <!-- Modal -->
+                                                            <div class="modal fade" id="exampleModal${count}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <div class="alert alert-warning" role="alert">
+                                                                        <strong>Sentiment Not Assigned</strong>
+                                                                    </div>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p class="card-text" style="font-weight:bold">${comment.data().Comment}</p >
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p class="card-text">This might be due to 'Sentiment Analyzer' being offline while adding this comment</p >
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                            <!-- Modal End -->
                                         </h5>
                                         <p class="card-text">${comment.data().Comment}</p >
                                     </div >
                                 </div >
                                 `;
-                                html += s;
+                                    html += s;
+                                }
                                 count += 1;
                             })
                             document.getElementById('comments').innerHTML = html;
@@ -225,7 +385,7 @@
 
             })
 
-            function commentAdd(postId, adminId) {
+            async function commentAdd(postId, adminId) {
                 document.getElementById('comment-add-button').disabled = true;
                 console.log(postId);
                 const content = document.getElementById('user-comment').value;
@@ -236,18 +396,74 @@
                     return;
                 }
 
-                db.collection('Posts').doc(postId).collection('Comments').add({
-                    UserId: adminId,
-                    Comment: content,
-                    Date: nowdate(),
-                    Time: nowtime(),
-                    Index: new Date().getTime()
-                }).then(doc => {
-                    console.log('Comment added')
-                    document.getElementById('user-comment').value = '';
-                    document.getElementById('comment-add-button').disabled = false;
+                let data = {
+                    text: content
+                }
+                axios.post(`http://localhost:5001/comment-evaluation-system/us-central1/Sentiment/Predict`, data).then(response => {
+                    if (response.status === 200) {
+                        if (response.data !== false) {
+                            db.collection('Posts').doc(postId).collection('Comments').add({
+                                UserId: adminId,
+                                Comment: content,
+                                Date: nowdate(),
+                                Time: nowtime(),
+                                Index: new Date().getTime(),
+                                PredFlag: true,
+                                Prediction: response.data
+                            }).then(doc => {
+                                console.log('Comment added')
+                                document.getElementById('user-comment').value = '';
+                                document.getElementById('comment-add-button').disabled = false;
+                            }).catch(err => {
+                                return console.log(err);
+                            })
+                        } else {
+                            db.collection('Posts').doc(postId).collection('Comments').add({
+                                UserId: adminId,
+                                Comment: content,
+                                Date: nowdate(),
+                                Time: nowtime(),
+                                Index: new Date().getTime(),
+                                PredFlag: false
+                            }).then(doc => {
+                                console.log('Comment added')
+                                document.getElementById('user-comment').value = '';
+                                document.getElementById('comment-add-button').disabled = false;
+                            }).catch(err => {
+                                return console.log(err);
+                            })
+                        }
+                    } else {
+                        db.collection('Posts').doc(postId).collection('Comments').add({
+                            UserId: adminId,
+                            Comment: content,
+                            Date: nowdate(),
+                            Time: nowtime(),
+                            Index: new Date().getTime(),
+                            PredFlag: false
+                        }).then(doc => {
+                            console.log('Comment added')
+                            document.getElementById('user-comment').value = '';
+                            document.getElementById('comment-add-button').disabled = false;
+                        }).catch(err => {
+                            return console.log(err);
+                        })
+                    }
                 }).catch(err => {
-                    return console.log(err);
+                    db.collection('Posts').doc(postId).collection('Comments').add({
+                        UserId: adminId,
+                        Comment: content,
+                        Date: nowdate(),
+                        Time: nowtime(),
+                        Index: new Date().getTime(),
+                        PredFlag: false
+                    }).then(doc => {
+                        console.log('Comment added')
+                        document.getElementById('user-comment').value = '';
+                        document.getElementById('comment-add-button').disabled = false;
+                    }).catch(err => {
+                        return console.log(err);
+                    })
                 })
             }
 
