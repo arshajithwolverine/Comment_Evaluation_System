@@ -153,11 +153,80 @@
                         const userData = await db.collection('Users').doc(postData.data().UserId).get();
                         let postHtml = `<div class="row">
                                     <div class="col">
-                                        <div id="alert">
-                                        </div>
-                                        <div class="alert alert-success" role="alert">
-                                            <strong>${userData.data().Name}</strong>
-                                        </div>
+                                            <div class="alert alert-default" role="alert" id='reaction-class'>
+                                                <strong>${userData.data().Name}</strong>
+                                                <button type="button" class="btn btn-secondary btn-sm" style="margin-left:45%" data-toggle="modal" data-target="#Overview">Overview</button>
+
+                                                <div id="Analysis">
+                                                <!-- Modal -->
+                                                            <div class="modal fade" id="Overview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <div class="alert alert-default" role="alert" id='reaction-class-inside'>
+                                                                        <strong id='result'>Analysing ...</strong>
+                                                                    </div>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <!-- Pogress Bar -->
+                                                                <div style="margin:20px">
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Positive</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span id="posp">${""}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${""}%;" id="posp2"></div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Neutral</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span id="neup">${""}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${""}%;" id="neup2"></div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Negative</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span id="negp">${""}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${""}%;" id="negp2"></div>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                                <!-- Pogress Bar End-->
+
+
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                <!-- Modal End -->
+                                                </div>
+                                            </div>
                                         <form>
                                             <textarea class="form-control" id="content" rows="14" placeholder="loading ..." style="font-size:large;font-weight:bold" disabled>${postData.data().Content}</textarea>
                                         </form>
@@ -169,9 +238,60 @@
                         //comment showing
                         db.collection('Posts').doc(postid).collection('Comments').orderBy('Index', 'desc').onSnapshot(async snap => {
                             const promises = [];
+                            let PositiveCount = 0, NeutralCount = 0, NegativeCount = 0;
                             snap.forEach(comment => {
                                 promises.push(db.collection('Users').doc(comment.data().UserId).get());
+                                if (comment.data().PredFlag) {
+                                    if (comment.data().Prediction.sentiment === 'Positive') {
+                                        PositiveCount += 1;
+                                    } else if (comment.data().Prediction.sentiment === 'Neutral') {
+                                        NeutralCount += 1;
+                                    } else if (comment.data().Prediction.sentiment === 'Negative') {
+                                        NegativeCount += 1;
+                                    }
+                                }
                             });
+                            let total = PositiveCount + NeutralCount + NegativeCount;
+                            let PositivePercentage = PositiveCount / total;
+                            PositivePercentage = Math.round(PositivePercentage * 10000) / 100;
+                            if (isNaN(PositivePercentage)) { PositivePercentage = 0; }
+                            let NeutralPercentage = NeutralCount / total;
+                            NeutralPercentage = Math.round(NeutralPercentage * 10000) / 100;
+                            if (isNaN(NeutralPercentage)) { NeutralPercentage = 0; }
+                            let NegativePercentage = NegativeCount / total;
+                            NegativePercentage = Math.round(NegativePercentage * 10000) / 100;
+                            if (isNaN(NegativePercentage)) { NegativePercentage = 0; }
+
+                            document.getElementById('posp').innerHTML = `${PositivePercentage}%`;
+                            document.getElementById('posp2').style = `width:${PositivePercentage}%`;
+                            document.getElementById('neup').innerHTML = `${NeutralPercentage}%`;
+                            document.getElementById('neup2').style = `width:${NeutralPercentage}%`;
+                            document.getElementById('negp').innerHTML = `${NegativePercentage}%`;
+                            document.getElementById('negp2').style = `width:${NegativePercentage}%`;
+
+                            let big = 'pos';
+                            if (NegativePercentage > NeutralPercentage && NegativePercentage > PositivePercentage) {
+                                big = 'neg';
+                            }
+                            if (NeutralPercentage >= NegativePercentage && NeutralPercentage >= PositivePercentage) {
+                                big = 'neu';
+                            }
+
+                            if (big === 'pos') {
+                                document.getElementById('reaction-class').className = "alert alert-success";
+                                document.getElementById('reaction-class-inside').className = "alert alert-success";
+                                document.getElementById('result').innerHTML = `Peoples Reaction`;
+                            } else if (big == 'neu') {
+                                document.getElementById('reaction-class').className = "alert alert-info";
+                                document.getElementById('reaction-class-inside').className = "alert alert-info";
+                                document.getElementById('result').innerHTML = `Peoples Reaction`;
+                            } else if (big == 'neg') {
+                                document.getElementById('reaction-class').className = "alert alert-danger";
+                                document.getElementById('reaction-class-inside').className = "alert alert-danger";
+                                document.getElementById('result').innerHTML = `Peoples Reaction`;
+                            }
+
+
                             const users = await Promise.all(promises);
                             const userNames = [];
                             users.forEach(user => {
@@ -210,6 +330,55 @@
                                                                 <div class="modal-body">
                                                                     <p class="card-text">Predicted with a confidence of <b style="font-weight:bold">${Math.round(pred.confidence * 10000) / 100}%</b></p >
                                                                 </div>
+
+                                                                <!-- Pogress Bar -->
+                                                                <div style="margin:20px">
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Positive</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span>${Math.round(pred.probabilities.Positive * 10000) / 100}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${Math.round(pred.probabilities.Positive * 10000) / 100}%;"></div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Neutral</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span>${Math.round(pred.probabilities.Neutral * 10000) / 100}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${Math.round(pred.probabilities.Neutral * 10000) / 100}%;"></div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Negative</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span>${Math.round(pred.probabilities.Negative * 10000) / 100}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${Math.round(pred.probabilities.Negative * 10000) / 100}%;"></div>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                                <!-- Pogress Bar End-->
+
+
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                                 </div>
@@ -252,6 +421,55 @@
                                                                 <div class="modal-body">
                                                                     <p class="card-text">Predicted with a confidence of <b style="font-weight:bold">${Math.round(pred.confidence * 10000) / 100}%</b></p >
                                                                 </div>
+
+                                                                <!-- Pogress Bar -->
+                                                                <div style="margin:20px">
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Positive</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span>${Math.round(pred.probabilities.Positive * 10000) / 100}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${Math.round(pred.probabilities.Positive * 10000) / 100}%;"></div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Neutral</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span>${Math.round(pred.probabilities.Neutral * 10000) / 100}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${Math.round(pred.probabilities.Neutral * 10000) / 100}%;"></div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Negative</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span>${Math.round(pred.probabilities.Negative * 10000) / 100}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${Math.round(pred.probabilities.Negative * 10000) / 100}%;"></div>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                                <!-- Pogress Bar End-->
+
+
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                                 </div>
@@ -294,6 +512,56 @@
                                                                 <div class="modal-body">
                                                                     <p class="card-text">Predicted with a confidence of <b style="font-weight:bold">${Math.round(pred.confidence * 10000) / 100}%</b></p >
                                                                 </div>
+
+
+                                                                <!-- Pogress Bar -->
+                                                                <div style="margin:20px">
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Positive</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span>${Math.round(pred.probabilities.Positive * 10000) / 100}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${Math.round(pred.probabilities.Positive * 10000) / 100}%;"></div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Neutral</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span>${Math.round(pred.probabilities.Neutral * 10000) / 100}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${Math.round(pred.probabilities.Neutral * 10000) / 100}%;"></div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="progress-wrapper">
+                                                                    <div class="progress-info">
+                                                                        <div class="progress-label">
+                                                                        <span>Negative</span>
+                                                                        </div>
+                                                                        <div class="progress-percentage">
+                                                                        <span>${Math.round(pred.probabilities.Negative * 10000) / 100}%</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${Math.round(pred.probabilities.Negative * 10000) / 100}%;"></div>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                                <!-- Pogress Bar End-->
+
+
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                                 </div>
