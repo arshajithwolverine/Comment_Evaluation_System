@@ -8,6 +8,8 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
+const db = admin.firestore();
+
 const express = require('express');
 const cors = require('cors');
 
@@ -30,6 +32,25 @@ app.post('/Predict', async (req, res) => {
 
 })
 
-
+app.post('/BulkAnalysis', async (req, res) => {
+    const promises = [];
+    const posts = db.collection('Posts').get();
+    const postIds = [];
+    posts.forEach(post => {
+        promises.push(db.collection('Posts').doc(post.id).collection('Comments').get());
+        postIds.push(post.id)
+    })
+    let count = 0;
+    const promises2 = [];
+    const comments_collection = await Promise.all(promises);
+    comments_collection.forEach(comments => {
+        comments.forEach(comment => {
+            if (comment.data().Prediction === undefined) {
+                promises2.push();
+            }
+        })
+        count += 1;
+    })
+})
 
 exports.Sentiment = functions.https.onRequest(app);
